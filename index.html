@@ -3,187 +3,177 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FiveAir1337Life-Time</title>
-  <meta name="description" content="Реальная жизнь без воды: работа, деньги, навыки и бизнес." />
-
+  <title>FiveAir1337Life-Time — Life Simulator</title>
   <style>
     :root{
       --bg:#0b0f14;
-      --panel:#101823;
-      --panel2:#0f1620;
+      --panel:#0f1620;
+      --panel2:#101b28;
       --text:#e7eef7;
       --muted:#9db0c7;
       --line:#223042;
       --accent:#2d7cff;
-      --accent2:#7aa9ff;
       --good:#43d17a;
       --bad:#ff5c5c;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
+      --warn:#ffcc66;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      background:radial-gradient(1200px 600px at 15% 0%, rgba(45,124,255,.20), transparent 60%),
-                 radial-gradient(900px 500px at 90% 20%, rgba(122,169,255,.12), transparent 55%),
-                 var(--bg);
       color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 0%, rgba(45,124,255,.22), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(122,169,255,.14), transparent 55%),
+        var(--bg);
     }
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
     .topbar{
-      position:sticky; top:0; z-index:10;
+      position:sticky;top:0;z-index:10;
       backdrop-filter: blur(10px);
-      background: rgba(11,15,20,.70);
+      background: rgba(11,15,20,.72);
       border-bottom:1px solid rgba(34,48,66,.65);
     }
     .topbar-inner{
-      max-width:1100px;margin:0 auto;padding:14px 18px;
-      display:flex;align-items:center;justify-content:space-between;gap:14px;
-    }
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{
-      width:36px;height:36px;border-radius:12px;
-      background:linear-gradient(135deg, rgba(45,124,255,.95), rgba(122,169,255,.55));
-      box-shadow: var(--shadow);
-      display:grid;place-items:center;
-      font-weight:900;letter-spacing:.5px;color:#06101d;
-    }
-    .brand h1{font-size:16px;margin:0}
-    .brand span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
-
-    nav{display:flex;gap:10px;flex-wrap:wrap}
-    .navbtn{
-      padding:10px 12px;border:1px solid rgba(34,48,66,.9);
-      background:rgba(16,24,35,.55);
-      border-radius:12px;
-      font-size:13px;color:var(--muted);
-      transition:.2s;
-    }
-    .navbtn:hover{border-color:rgba(45,124,255,.9);color:var(--text);transform:translateY(-1px)}
-
-    .hero{padding:26px 0 8px}
-    .hero-grid{
-      display:grid;gap:14px;
-      grid-template-columns: 1.35fr .65fr;
-    }
-    @media (max-width: 900px){
-      .hero-grid{grid-template-columns:1fr}
-    }
-    .card{
-      background:linear-gradient(180deg, rgba(16,24,35,.88), rgba(15,22,32,.88));
-      border:1px solid rgba(34,48,66,.85);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    .hero-title{
-      font-size:34px;line-height:1.08;margin:0 0 10px;
-      letter-spacing:.2px;
-    }
-    .hero-sub{margin:0;color:var(--muted);line-height:1.6;max-width:62ch}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-    .chip{
-      font-size:12px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(34,48,66,.9);
-      background:rgba(11,15,20,.35);
-      color:var(--muted);
-    }
-    .chip b{color:var(--text)}
-
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .btn{
-      border:none;border-radius:14px;
-      padding:12px 14px;
-      font-weight:700;
-      cursor:pointer;
-      transition:.18s;
-      display:inline-flex;align-items:center;gap:8px;
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-    }
-    .btn-primary{background:var(--accent);color:#08121f}
-    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
-    .btn-ghost{
-      background:rgba(11,15,20,.25);
-      color:var(--text);
-      border:1px solid rgba(34,48,66,.9);
-      box-shadow:none;
-    }
-    .btn-ghost:hover{border-color:rgba(45,124,255,.9);transform:translateY(-1px)}
-
-    .grid{
-      display:grid;gap:14px;
-      grid-template-columns: 1fr 1fr;
-      margin-top:14px;
-    }
-    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
-
-    .section-title{
+      max-width:1200px;margin:0 auto;padding:12px 16px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;
-      margin:0 0 10px;
-      font-size:18px;
     }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:42px;height:42px;border-radius:16px;
+      display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(45,124,255,.95), rgba(122,169,255,.55));
+      color:#06101d;font-weight:1000;box-shadow:var(--shadow);
+      letter-spacing:.4px;
+    }
+    .brand h1{margin:0;font-size:16px}
+    .brand .sub{margin:2px 0 0;color:var(--muted);font-size:12px}
+    .top-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    button{
+      border:none;border-radius:14px;padding:11px 14px;
+      cursor:pointer;font-weight:900;
+      transition:.15s;
+    }
+    .b-primary{background:var(--accent);color:#07101b;box-shadow:0 10px 25px rgba(0,0,0,.18)}
+    .b-ghost{background:rgba(11,15,20,.25);color:var(--text);border:1px solid rgba(34,48,66,.9)}
+    .b-danger{background:rgba(255,92,92,.12);color:var(--bad);border:1px solid rgba(255,92,92,.35)}
+    .b-primary:hover,.b-ghost:hover,.b-danger:hover{transform:translateY(-1px)}
+    .pill{
+      font-size:12px;border:1px solid rgba(34,48,66,.85);
+      padding:6px 10px;border-radius:999px;color:var(--muted);
+      background:rgba(15,22,32,.35);
+      white-space:nowrap;
+    }
+
+    .layout{display:grid;grid-template-columns: 320px 1fr;gap:14px;margin-top:14px}
+    @media (max-width: 980px){ .layout{grid-template-columns:1fr} }
+
+    .card{
+      background:linear-gradient(180deg, rgba(16,27,40,.90), rgba(15,22,32,.88));
+      border:1px solid rgba(34,48,66,.85);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      padding:14px;
+    }
+    .title{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:10px;
+    }
+    .title h2{margin:0;font-size:16px}
     .muted{color:var(--muted);font-size:13px;line-height:1.55}
 
-    .input, textarea{
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi{
+      border:1px solid rgba(34,48,66,.85);
+      border-radius:var(--r2);
+      padding:12px;background:rgba(11,15,20,.20);
+    }
+    .kpi .lab{font-size:12px;color:var(--muted)}
+    .kpi .val{font-size:20px;font-weight:1000;margin-top:4px}
+    .bar{height:10px;border-radius:999px;background:rgba(34,48,66,.75);overflow:hidden;margin-top:7px}
+    .bar > div{height:100%;background:var(--accent);width:0%}
+    .sep{height:1px;background:rgba(34,48,66,.7);margin:12px 0}
+
+    .menu{display:grid;gap:8px;margin-top:10px}
+    .tab{
+      padding:12px;border-radius:14px;
+      border:1px solid rgba(34,48,66,.85);
+      background:rgba(11,15,20,.18);
+      color:var(--text);
+      text-align:left;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .tab small{color:var(--muted);font-weight:700}
+    .tab.active{
+      border-color:rgba(45,124,255,.90);
+      background:rgba(45,124,255,.12);
+    }
+
+    .grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+    @media (max-width: 980px){ .grid2{grid-template-columns:1fr} }
+
+    .actions{display:grid;gap:10px}
+    .action{
+      border:1px solid rgba(34,48,66,.85);
+      border-radius:14px;
+      padding:12px;background:rgba(11,15,20,.18);
+    }
+    .action .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .action b{display:block;margin-bottom:4px}
+    .small{font-size:12px;color:var(--muted)}
+    .good{color:var(--good);font-weight:1000}
+    .bad{color:var(--bad);font-weight:1000}
+    .warn{color:var(--warn);font-weight:1000}
+
+    input, select{
       width:100%;
-      background:rgba(11,15,20,.35);
+      background:rgba(11,15,20,.28);
       border:1px solid rgba(34,48,66,.9);
       border-radius:14px;
       padding:12px 12px;
       color:var(--text);
       outline:none;
     }
-    textarea{min-height:92px;resize:vertical}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .row > *{flex:1 1 160px}
+    .row2{display:flex;gap:10px;flex-wrap:wrap}
+    .row2 > *{flex:1 1 160px}
+
+    .log{
+      margin:0;padding:0;list-style:none;display:grid;gap:8px;
+      max-height:340px;overflow:auto;
+    }
+    .log li{
+      border:1px solid rgba(34,48,66,.8);
+      background:rgba(11,15,20,.18);
+      border-radius:14px;padding:10px;
+      font-size:13px;
+    }
 
     .list{
-      display:grid;gap:10px;margin:0;padding:0;list-style:none;
+      margin:0;padding:0;list-style:none;display:grid;gap:10px;
     }
-    .item{
-      display:flex;gap:10px;align-items:flex-start;
-      padding:12px;
-      border-radius:14px;
+    .list li{
       border:1px solid rgba(34,48,66,.85);
-      background:rgba(11,15,20,.28);
+      background:rgba(11,15,20,.16);
+      border-radius:14px;padding:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
     }
-    .item b{display:block;margin-bottom:4px}
-    .tag{
+    .badge{
       font-size:12px;color:var(--muted);
       border:1px solid rgba(34,48,66,.85);
       padding:4px 8px;border-radius:999px;
-      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(15,22,32,.25);
+      white-space:nowrap;
     }
-    .tag .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:var(--accent2);
-      box-shadow:0 0 0 4px rgba(122,169,255,.12);
-    }
-    .kpi{
-      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
-    }
-    .kpi .box{
-      flex:1 1 140px;
-      background:rgba(11,15,20,.25);
-      border:1px solid rgba(34,48,66,.85);
-      border-radius:14px;
-      padding:12px;
-    }
-    .kpi .box .n{font-size:20px;font-weight:900;margin-top:4px}
-    .small{font-size:12px;color:var(--muted)}
     footer{
-      padding:26px 0 34px;
+      padding:18px 0 28px;
       color:var(--muted);
       text-align:center;
-      font-size:13px;
+      font-size:12px;
     }
-    .sep{height:1px;background:rgba(34,48,66,.7);margin:14px 0}
-    .ok{color:var(--good);font-weight:800}
-    .err{color:var(--bad);font-weight:800}
   </style>
 </head>
 
@@ -194,458 +184,1052 @@
         <div class="logo">5A</div>
         <div>
           <h1>FiveAir1337Life-Time</h1>
-          <span>Работа • Деньги • Навыки • Бизнес</span>
+          <div class="sub">Life Simulator • город • деньги • бизнес • ранги</div>
         </div>
       </div>
-
-      <nav>
-        <a class="navbtn" href="#guides">📚 Гайды</a>
-        <a class="navbtn" href="#tools">🧰 Инструменты</a>
-        <a class="navbtn" href="#notes">📝 Заметки</a>
-        <a class="navbtn" href="#checklist">✅ День</a>
-      </nav>
+      <div class="top-actions">
+        <div class="pill" id="dayPill">День 1</div>
+        <div class="pill" id="weekPill">Неделя 1</div>
+        <div class="pill" id="rankPill">Ранг: Новичок</div>
+        <button class="b-primary" id="nextDayBtn">📅 Следующий день</button>
+        <button class="b-danger" id="resetBtn">♻️ Сброс</button>
+      </div>
     </div>
   </div>
 
   <div class="wrap">
-    <section class="hero">
-      <div class="hero-grid">
-        <div class="card">
-          <h2 class="hero-title">Реальная жизнь — без воды.</h2>
-          <p class="hero-sub">
-            Здесь коротко и по делу: как найти работу, поднять доход, прокачать навыки и тестировать идеи бизнеса.
-            Всё, что можно применить сегодня.
-          </p>
+    <div class="layout">
+      <!-- LEFT: profile + city -->
+      <aside class="card">
+        <div class="title">
+          <h2>👤 Профиль</h2>
+          <span class="badge" id="actionsLeft">Ходов: 3/3</span>
+        </div>
 
-          <div class="chips">
-            <div class="chip"><b>1%</b> в день</div>
-            <div class="chip">фокус на <b>действиях</b></div>
-            <div class="chip">без <b>сказок</b></div>
+        <div class="kpis">
+          <div class="kpi">
+            <div class="lab">💰 Наличные</div>
+            <div class="val" id="money">0 ₽</div>
+            <div class="small">Трата/доход в действиях</div>
           </div>
-
-          <div class="actions">
-            <button class="btn btn-primary" id="focusBtn">🌙 Фокус-режим</button>
-            <button class="btn btn-ghost" id="resetBtn">♻️ Сбросить данные</button>
+          <div class="kpi">
+            <div class="lab">🏦 Банк</div>
+            <div class="val" id="bank">0 ₽</div>
+            <div class="small">Депозит/снятие</div>
           </div>
-
-          <div class="kpi" id="kpi">
-            <div class="box">
-              <div class="small">Заметок</div>
-              <div class="n" id="kpiNotes">0</div>
-            </div>
-            <div class="box">
-              <div class="small">Задач на сегодня</div>
-              <div class="n" id="kpiTasks">0</div>
-            </div>
-            <div class="box">
-              <div class="small">Выполнено</div>
-              <div class="n" id="kpiDone">0</div>
-            </div>
+          <div class="kpi">
+            <div class="lab">⚡ Энергия</div>
+            <div class="val" id="energy">100</div>
+            <div class="bar"><div id="energyBar"></div></div>
+          </div>
+          <div class="kpi">
+            <div class="lab">🧠 Навык</div>
+            <div class="val" id="skill">1</div>
+            <div class="small">Влияет на доход</div>
+          </div>
+          <div class="kpi">
+            <div class="lab">🏢 Бизнес</div>
+            <div class="val" id="biz">0</div>
+            <div class="small">Пассив в неделю</div>
+          </div>
+          <div class="kpi">
+            <div class="lab">💳 Долг</div>
+            <div class="val" id="debt">0 ₽</div>
+            <div class="small">Проценты в конце дня</div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="section-title">
-            <span>⚡ Быстрый старт</span>
-            <span class="tag"><span class="dot"></span> Сегодня</span>
+        <div class="sep"></div>
+
+        <div class="title">
+          <h2>🗺️ Город</h2>
+          <span class="badge" id="netWorth">Капитал: 0 ₽</span>
+        </div>
+
+        <div class="menu" id="tabs">
+          <button class="tab active" data-tab="home">🏠 Дом <small id="homeSmall"></small></button>
+          <button class="tab" data-tab="work">💼 Работа <small>доход</small></button>
+          <button class="tab" data-tab="study">📑 Обучение <small>навык</small></button>
+          <button class="tab" data-tab="biz">🚀 Бизнес <small>пассив</small></button>
+          <button class="tab" data-tab="bank">🏦 Банк <small>депозит/кредит</small></button>
+          <button class="tab" data-tab="shop">🏬 Магазин <small>еда/техника</small></button>
+          <button class="tab" data-tab="cars">🚘 Автосалон <small>машины</small></button>
+          <button class="tab" data-tab="realty">🏢 Недвижимость <small>улучшение</small></button>
+          <button class="tab" data-tab="crypto">🖥💶 Крипта <small>рынок</small></button>
+          <button class="tab" data-tab="tops">Forbes 😎💵 <small>топы</small></button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="title">
+          <h2>🎒 Инвентарь</h2>
+          <span class="badge" id="invBadge">—</span>
+        </div>
+        <ul class="list" id="inventoryList"></ul>
+
+        <footer style="padding:14px 0 0;text-align:left">
+          💾 Всё сохраняется автоматически в браузере.
+        </footer>
+      </aside>
+
+      <!-- RIGHT: content + log -->
+      <main class="grid2">
+        <section class="card">
+          <div class="title">
+            <h2 id="screenTitle">🏠 Дом</h2>
+            <span class="badge" id="screenHint">Выбери действие</span>
           </div>
-          <p class="muted" style="margin-top:0">
-            Сделай 3 шага: выбери цель → поставь 3 задачи → зафиксируй итог.
-          </p>
+
+          <div class="muted" id="screenDesc"></div>
           <div class="sep"></div>
 
-          <label class="small">Цель на неделю</label>
-          <input class="input" id="weeklyGoal" placeholder="Напр: найти работу / поднять доход / запустить услугу" />
+          <div class="actions" id="screenActions"></div>
 
-          <div style="height:10px"></div>
-
-          <label class="small">Почему это важно?</label>
-          <input class="input" id="whyGoal" placeholder="Напр: хочу выйти на 50к / помочь семье / купить технику" />
-
-          <div style="height:12px"></div>
-          <button class="btn btn-primary" id="saveGoalBtn">💾 Сохранить</button>
-
-          <p class="muted" id="goalSaved" style="margin:10px 0 0"></p>
-        </div>
-      </div>
-    </section>
-
-    <section id="guides" class="grid">
-      <div class="card">
-        <div class="section-title">
-          <span>📚 Гайды</span>
-          <span class="muted">поиск по темам</span>
-        </div>
-
-        <input class="input" id="searchGuides" placeholder="Поиск: резюме, собес, бюджет, фриланс..." />
-
-        <div style="height:10px"></div>
-
-        <ul class="list" id="guidesList">
-          <li class="item" data-tags="работа резюме собеседование">
-            <div>
-              <b>Как сделать резюме без воды</b>
-              <div class="muted">1 страница, конкретика, цифры, навыки, опыт.</div>
-              <div style="height:8px"></div>
-              <span class="tag"><span class="dot"></span> Работа</span>
-            </div>
-          </li>
-          <li class="item" data-tags="работа собеседование вопросы">
-            <div>
-              <b>10 вопросов на собесе и как отвечать</b>
-              <div class="muted">Готовые структуры ответов, без паники.</div>
-              <div style="height:8px"></div>
-              <span class="tag"><span class="dot"></span> Работа</span>
-            </div>
-          </li>
-          <li class="item" data-tags="деньги бюджет учет">
-            <div>
-              <b>Бюджет: схема 50/30/20 (простыми словами)</b>
-              <div class="muted">Как перестать жить в ноль и начать копить.</div>
-              <div style="height:8px"></div>
-              <span class="tag"><span class="dot"></span> Деньги</span>
-            </div>
-          </li>
-          <li class="item" data-tags="бизнес услуги старт">
-            <div>
-              <b>Микробизнес: услуга за 0 ₽</b>
-              <div class="muted">Что продать первым и где искать клиентов.</div>
-              <div style="height:8px"></div>
-              <span class="tag"><span class="dot"></span> Бизнес</span>
-            </div>
-          </li>
-          <li class="item" data-tags="навыки обучение бесплатно">
-            <div>
-              <b>Навыки, которые дают деньги</b>
-              <div class="muted">Коммуникация, продажи, дизайн, монтаж, код — как выбрать.</div>
-              <div style="height:8px"></div>
-              <span class="tag"><span class="dot"></span> Навыки</span>
-            </div>
-          </li>
-        </ul>
-
-        <p class="muted" id="noGuides" style="display:none;margin-top:10px">
-          Ничего не найдено 😅 Попробуй другое слово.
-        </p>
-      </div>
-
-      <div id="tools" class="card">
-        <div class="section-title">
-          <span>🧰 Инструменты</span>
-          <span class="muted">быстро посчитать</span>
-        </div>
-
-        <div class="row">
-          <div>
-            <label class="small">Часовая ставка (₽)</label>
-            <input class="input" id="rate" type="number" placeholder="Напр: 250" />
+          <div class="sep"></div>
+          <div class="title">
+            <h2>🎯 Цели и достижения</h2>
+            <span class="badge" id="achvBadge">0/0</span>
           </div>
-          <div>
-            <label class="small">Часов</label>
-            <input class="input" id="hours" type="number" placeholder="Напр: 6" />
+          <ul class="list" id="achievements"></ul>
+        </section>
+
+        <section class="card">
+          <div class="title">
+            <h2>📰 События</h2>
+            <span class="badge" id="weekEconomy">—</span>
           </div>
-        </div>
+          <ul class="log" id="log"></ul>
+        </section>
+      </main>
+    </div>
 
-        <div style="height:10px"></div>
-
-        <div class="row">
-          <div>
-            <label class="small">Дней</label>
-            <input class="input" id="days" type="number" placeholder="Напр: 20" />
-          </div>
-          <div>
-            <label class="small">Итог (₽)</label>
-            <input class="input" id="total" type="text" placeholder="0" disabled />
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-        <div class="row">
-          <button class="btn btn-primary" id="calcBtn">🧮 Посчитать</button>
-          <button class="btn btn-ghost" id="saveCalcBtn">💾 Сохранить расчёт</button>
-        </div>
-
-        <p class="muted" id="calcSaved" style="margin:10px 0 0"></p>
-
-        <div class="sep"></div>
-
-        <div class="section-title" style="margin:0 0 8px">
-          <span>📌 Последний расчёт</span>
-        </div>
-        <div class="muted" id="lastCalc">Пока пусто.</div>
-      </div>
-    </section>
-
-    <section class="grid" style="margin-top:14px">
-      <div id="notes" class="card">
-        <div class="section-title">
-          <span>📝 Заметки</span>
-          <span class="muted">сохраняются</span>
-        </div>
-
-        <textarea id="noteText" placeholder="Записывай мысли: что сделать, что улучшить, что мешает..."></textarea>
-        <div style="height:10px"></div>
-        <button class="btn btn-primary" id="addNoteBtn">➕ Добавить</button>
-
-        <div class="sep"></div>
-        <ul class="list" id="notesList"></ul>
-        <p class="muted" id="noNotes">Пока нет заметок. Добавь первую ✍️</p>
-      </div>
-
-      <div id="checklist" class="card">
-        <div class="section-title">
-          <span>✅ План на день</span>
-          <span class="muted">3 дела — достаточно</span>
-        </div>
-
-        <div class="row">
-          <input class="input" id="taskText" placeholder="Добавь задачу (пример: откликнуться на 10 вакансий)" />
-          <button class="btn btn-primary" id="addTaskBtn">➕</button>
-        </div>
-
-        <div class="sep"></div>
-
-        <ul class="list" id="tasksList"></ul>
-        <p class="muted" id="noTasks">Пока задач нет. Добавь 1–3 задачи на сегодня ✅</p>
-      </div>
-    </section>
-
-    <footer>
-      © FiveAir1337Life-Time • Сделано на GitHub Pages • <span class="ok">бесплатно</span> ✅
-    </footer>
+    <footer>© FiveAir1337Life-Time • Life Simulator</footer>
   </div>
 
-  <script>
-    // ===== helpers =====
-    const $ = (id) => document.getElementById(id);
-    const store = {
-      get(key, fallback){
-        try{
-          const v = localStorage.getItem(key);
-          return v ? JSON.parse(v) : fallback;
-        }catch(e){ return fallback; }
-      },
-      set(key, val){
-        localStorage.setItem(key, JSON.stringify(val));
+<script>
+/* =========================
+   FiveAir1337Life-Time SIM
+   ========================= */
+
+const KEY = "fa_lifetime_sim_v2";
+const $ = (id) => document.getElementById(id);
+
+const RANKS = [
+  {name:"Новичок", nw:0},
+  {name:"Работяга", nw:5000},
+  {name:"Стажёр бизнеса", nw:15000},
+  {name:"Предприниматель", nw:40000},
+  {name:"Бизнесмен", nw:90000},
+  {name:"Forbes 😎💵", nw:200000},
+];
+
+const defaultState = () => ({
+  day: 1,
+  actionsLeft: 3,
+  money: 500,
+  bank: 0,
+  debt: 0,
+  energy: 100,
+  skill: 1,
+  biz: 0,
+  homeLevel: 0,     // 0 аренда, 1 комната, 2 квартира, 3 дом
+  rentDueIn: 7,     // дней до оплаты аренды/обслуживания
+  donations: 0,
+  // crypto
+  cryptoCash: 0, // сколько монет
+  cryptoPrice: 120, // ₽ за монету
+  // inventory
+  inv: {
+    food: 0,
+    tech: 0,
+    car: 0,
+    gear: 0
+  },
+  // simple "transfer" (копилка)
+  safe: 0,
+  // logs
+  log: [
+    {t:"Добро пожаловать! Выбери локацию слева и делай действия. 3 хода в день.", type:"info"}
+  ],
+  // local "tops"
+  tops: {
+    bestNetWorth: 0,
+    bestDonations: 0,
+    bestCryptoValue: 0
+  }
+});
+
+let S = loadState();
+let currentTab = "home";
+
+/* ---------- storage ---------- */
+function loadState(){
+  try{
+    const v = localStorage.getItem(KEY);
+    return v ? JSON.parse(v) : defaultState();
+  }catch(e){
+    return defaultState();
+  }
+}
+function saveState(){
+  localStorage.setItem(KEY, JSON.stringify(S));
+}
+
+/* ---------- utils ---------- */
+function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
+function rub(n){ return Number(n||0).toLocaleString("ru-RU")+" ₽"; }
+function week(){ return Math.floor((S.day-1)/7)+1; }
+function netWorth(){
+  // капитал = наличные + банк + копилка + ценность крипты + ценность авто/техники/жилья - долг
+  const cryptoVal = Math.floor(S.cryptoCash * S.cryptoPrice);
+  const carVal = S.inv.car * 12000;
+  const techVal = S.inv.tech * 2500;
+  const homeVal = [0, 8000, 25000, 65000][S.homeLevel] || 0;
+  return Math.max(0, (S.money + S.bank + S.safe + cryptoVal + carVal + techVal + homeVal) - S.debt);
+}
+function rankName(){
+  const nw = netWorth();
+  let r = RANKS[0].name;
+  for(const x of RANKS){ if(nw >= x.nw) r = x.name; }
+  return r;
+}
+function addLog(text, type="info"){
+  S.log.unshift({t:text, type});
+  if(S.log.length>70) S.log.pop();
+  saveState();
+  render();
+}
+function useAction(energyCost){
+  if(S.actionsLeft<=0){ addLog("Ходов на сегодня нет. Жми «Следующий день».","bad"); return false; }
+  if(S.energy<energyCost){ addLog("Не хватает энергии. Съешь еду или отдохни.","bad"); return false; }
+  S.actionsLeft -= 1;
+  S.energy = clamp(S.energy - energyCost, 0, 100);
+  return true;
+}
+function ensureNonNegative(){
+  S.money = Math.max(0, S.money);
+  S.bank = Math.max(0, S.bank);
+  S.debt = Math.max(0, S.debt);
+  S.safe = Math.max(0, S.safe);
+}
+
+/* ---------- economy rules ---------- */
+function weeklyCosts(){
+  // расходы на жизнь растут с уровнем жилья и навыком
+  const base = 600 + (S.skill-1)*140;
+  const homeMul = [1.0, 1.25, 1.55, 2.1][S.homeLevel] || 1.0;
+  return Math.floor(base * homeMul);
+}
+function passiveIncome(){
+  // бизнес даёт пассив раз в неделю
+  return Math.floor(S.biz * (420 + S.skill*55));
+}
+function dailyDebtInterest(){
+  // процент по долгу в день (не жёсткий, но ощутимый)
+  if(S.debt<=0) return 0;
+  return Math.floor(S.debt * 0.03); // 3% в день (игровое)
+}
+
+/* ---------- crypto market ---------- */
+function nextCryptoPrice(){
+  // небольшая случайная волатильность
+  const change = (Math.random()*0.22 - 0.10); // -10%..+12%
+  const p = Math.max(20, Math.floor(S.cryptoPrice * (1+change)));
+  S.cryptoPrice = p;
+}
+
+/* ---------- achievements/goals ---------- */
+const ACH = [
+  {id:"a1", name:"💼 Первая зарплата", desc:"Заработай 1 000 ₽", ok: ()=> (S.money + S.bank + S.safe) >= 1000},
+  {id:"a2", name:"🧠 Прокачка", desc:"Навык 5+", ok: ()=> S.skill >= 5},
+  {id:"a3", name:"🏢 Бизнес старт", desc:"Бизнес 1+", ok: ()=> S.biz >= 1},
+  {id:"a4", name:"🏠 Улучшил жильё", desc:"Жильё 1+", ok: ()=> S.homeLevel >= 1},
+  {id:"a5", name:"🚘 Первая машина", desc:"Купи 1 авто", ok: ()=> S.inv.car >= 1},
+  {id:"a6", name:"🏦 В банке есть деньги", desc:"Депозит 5 000 ₽+", ok: ()=> S.bank >= 5000},
+  {id:"a7", name:"🖥💶 Крипто-инвестор", desc:"Купи крипту", ok: ()=> S.cryptoCash > 0},
+  {id:"a8", name:"😎💵 Forbes", desc:"Капитал 200 000 ₽+", ok: ()=> netWorth() >= 200000},
+];
+
+/* ---------- screens ---------- */
+function setTab(tab){
+  currentTab = tab;
+  document.querySelectorAll(".tab").forEach(b=>{
+    b.classList.toggle("active", b.getAttribute("data-tab")===tab);
+  });
+  renderScreen();
+}
+
+function screenTemplate(title, desc, hint, actions){
+  $("screenTitle").textContent = title;
+  $("screenDesc").textContent = desc;
+  $("screenHint").textContent = hint;
+  const box = $("screenActions");
+  box.innerHTML = "";
+  actions.forEach(a => box.appendChild(a));
+}
+
+function actionCard({title, text, cost, btnText, onClick, extraHTML=""}){
+  const wrap = document.createElement("div");
+  wrap.className = "action";
+  wrap.innerHTML = `
+    <div class="row">
+      <div>
+        <b>${title}</b>
+        <div class="muted">${text}</div>
+        <div class="small" style="margin-top:6px">${cost}</div>
+        ${extraHTML ? `<div style="margin-top:10px">${extraHTML}</div>` : ""}
+      </div>
+      <button class="b-primary">${btnText}</button>
+    </div>
+  `;
+  wrap.querySelector("button").onclick = onClick;
+  return wrap;
+}
+
+/* ---------- location logic ---------- */
+function renderScreen(){
+  const nw = netWorth();
+  const wkCost = weeklyCosts();
+  const pass = passiveIncome();
+  const debtInt = dailyDebtInterest();
+  const cryptoVal = Math.floor(S.cryptoCash * S.cryptoPrice);
+
+  if(currentTab === "home"){
+    const homeName = ["Аренда","Комната","Квартира","Дом"][S.homeLevel] || "Аренда";
+    const rentText = `До оплаты: ${S.rentDueIn} дн. • Расход в неделю: ${rub(wkCost)} • Пассив: ${rub(pass)}`;
+    const actions = [];
+
+    actions.push(actionCard({
+      title:"🍎 Еда (восстановить энергию)",
+      text:"Если энергия низкая — еда спасает. Еда берётся из инвентаря.",
+      cost:`Требует: 1×Еда • Энергия: +30`,
+      btnText:"Съесть",
+      onClick: ()=>{
+        if(S.actionsLeft<=0){ addLog("Нет ходов. Следующий день.","bad"); return; }
+        if(S.inv.food<=0){ addLog("Еды нет. Купи в магазине 🏬","bad"); return; }
+        S.actionsLeft -= 1;
+        S.inv.food -= 1;
+        S.energy = clamp(S.energy + 30, 0, 100);
+        addLog("Ты поел 🍎 Энергия +30.","good");
+        saveState(); render();
       }
-    };
+    }));
 
-    // ===== focus mode =====
-    const focusKey = "fa_focus";
-    function applyFocus(on){
-      if(on){
-        document.body.style.background = "#000";
-        store.set(focusKey, true);
-      } else {
-        document.body.style.background = "";
-        store.set(focusKey, false);
+    actions.push(actionCard({
+      title:"🛌 Отдых",
+      text:"Восстанавливает энергию. Полезно если ты выжат.",
+      cost:"Ход: -1 • Энергия: +45",
+      btnText:"Отдыхать",
+      onClick: ()=>{
+        if(S.actionsLeft<=0){ addLog("Нет ходов. Следующий день.","bad"); return; }
+        S.actionsLeft -= 1;
+        S.energy = clamp(S.energy + 45, 0, 100);
+        addLog("Отдохнул 🛌 Энергия +45.","good");
+        saveState(); render();
       }
-    }
-    applyFocus(!!store.get(focusKey, false));
-    $("focusBtn").onclick = () => applyFocus(!store.get(focusKey, false));
+    }));
 
-    // ===== goal =====
-    const goalKey = "fa_goal";
-    function loadGoal(){
-      const g = store.get(goalKey, {weekly:"", why:""});
-      $("weeklyGoal").value = g.weekly || "";
-      $("whyGoal").value = g.why || "";
-      $("goalSaved").textContent = g.weekly ? "✅ Сохранено" : "";
-    }
-    $("saveGoalBtn").onclick = () => {
-      store.set(goalKey, { weekly: $("weeklyGoal").value.trim(), why: $("whyGoal").value.trim() });
-      $("goalSaved").textContent = "✅ Сохранено";
-      setTimeout(()=> $("goalSaved").textContent = "", 1500);
-    };
-    loadGoal();
+    actions.push(actionCard({
+      title:"💸 Перевод в копилку",
+      text:"Переведи часть денег в копилку (чисто внутри игры).",
+      cost:"Наличные → Копилка",
+      btnText:"Перевести",
+      extraHTML: `
+        <div class="row2">
+          <input id="safeAmt" type="number" placeholder="Сумма (например 500)" />
+          <button class="b-ghost" id="safeDo">Ок</button>
+        </div>
+      `,
+      onClick: ()=>{}
+    }));
 
-    // ===== guides search =====
-    $("searchGuides").addEventListener("input", () => {
-      const q = $("searchGuides").value.trim().toLowerCase();
-      const items = Array.from($("guidesList").querySelectorAll(".item"));
-      let shown = 0;
-
-      items.forEach(li => {
-        const tags = (li.getAttribute("data-tags") || "").toLowerCase();
-        const text = li.innerText.toLowerCase();
-        const ok = !q || tags.includes(q) || text.includes(q);
-        li.style.display = ok ? "flex" : "none";
-        if(ok) shown++;
-      });
-
-      $("noGuides").style.display = shown ? "none" : "block";
-    });
-
-    // ===== calculator =====
-    const calcKey = "fa_calc";
-    function formatMoney(n){
-      const num = Number(n || 0);
-      return num.toLocaleString("ru-RU");
-    }
-    function calc(){
-      const rate = Number($("rate").value || 0);
-      const hours = Number($("hours").value || 0);
-      const days = Number($("days").value || 0);
-      const total = rate * hours * days;
-      $("total").value = formatMoney(total);
-      return { rate, hours, days, total };
-    }
-    $("calcBtn").onclick = calc;
-
-    function loadLastCalc(){
-      const c = store.get(calcKey, null);
-      if(!c){ $("lastCalc").textContent = "Пока пусто."; return; }
-      $("lastCalc").textContent = `${c.rate} ₽/час • ${c.hours} ч/день • ${c.days} дней → Итого: ${formatMoney(c.total)} ₽`;
-    }
-    $("saveCalcBtn").onclick = () => {
-      const c = calc();
-      store.set(calcKey, c);
-      loadLastCalc();
-      $("calcSaved").textContent = "✅ Расчёт сохранён";
-      setTimeout(()=> $("calcSaved").textContent = "", 1500);
-    };
-    loadLastCalc();
-
-    // ===== notes =====
-    const notesKey = "fa_notes";
-    function renderNotes(){
-      const notes = store.get(notesKey, []);
-      const ul = $("notesList");
-      ul.innerHTML = "";
-      $("noNotes").style.display = notes.length ? "none" : "block";
-
-      notes.forEach((n, idx) => {
-        const li = document.createElement("li");
-        li.className = "item";
-        li.innerHTML = `
-          <div style="width:100%">
-            <b>${escapeHtml(n.title)}</b>
-            <div class="muted">${escapeHtml(n.text)}</div>
-            <div style="height:10px"></div>
-            <button class="btn btn-ghost" data-del-note="${idx}">🗑 Удалить</button>
-          </div>
-        `;
-        ul.appendChild(li);
-      });
-
-      ul.querySelectorAll("[data-del-note]").forEach(btn => {
-        btn.onclick = () => {
-          const i = Number(btn.getAttribute("data-del-note"));
-          const arr = store.get(notesKey, []);
-          arr.splice(i, 1);
-          store.set(notesKey, arr);
-          renderNotes();
-          renderKPI();
+    // bind safe transfer
+    setTimeout(()=>{
+      const doBtn = document.getElementById("safeDo");
+      if(doBtn){
+        doBtn.onclick = ()=>{
+          const v = Number(document.getElementById("safeAmt").value || 0);
+          if(v<=0) return addLog("Введи сумму > 0","bad");
+          if(v>S.money) return addLog("Не хватает наличных","bad");
+          S.money -= v; S.safe += v;
+          addLog(`Перевод 💸 +${rub(v)} в копилку.`, "good");
+          saveState(); render();
         };
-      });
-    }
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-    $("addNoteBtn").onclick = () => {
-      const text = $("noteText").value.trim();
-      if(!text) return;
+      }
+    }, 0);
 
-      const title = text.length > 38 ? text.slice(0, 38) + "…" : text;
-      const notes = store.get(notesKey, []);
-      notes.unshift({ title, text, at: Date.now() });
-      store.set(notesKey, notes);
-      $("noteText").value = "";
-      renderNotes();
-      renderKPI();
-    };
-    renderNotes();
+    screenTemplate(
+      `🏠 Дом — ${homeName}`,
+      `Тут восстановление, еда, копилка. ${rentText}`,
+      `Капитал: ${rub(nw)} • Крипта: ${rub(cryptoVal)} • % по долгу/день: ${rub(debtInt)}`,
+      actions
+    );
+    return;
+  }
 
-    // ===== tasks =====
-    const tasksKey = "fa_tasks";
-    function renderTasks(){
-      const tasks = store.get(tasksKey, []);
-      const ul = $("tasksList");
-      ul.innerHTML = "";
-      $("noTasks").style.display = tasks.length ? "none" : "block";
+  if(currentTab === "work"){
+    const actions = [];
+    actions.push(actionCard({
+      title:"💼 Подработка",
+      text:"Надёжно, но не жирно. Хорошо для старта.",
+      cost:`Энергия: -20 • Доход: 140×Навык = ${rub(140*S.skill)}`,
+      btnText:"Работать",
+      onClick: ()=>{
+        if(!useAction(20)) return;
+        const inc = 140*S.skill;
+        S.money += inc;
+        addLog(`Подработка: +${rub(inc)} ✅`, "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🧑‍💻 Работа",
+      text:"Стабильно. Лучше подработки.",
+      cost:`Энергия: -30 • Доход: 260×Навык = ${rub(260*S.skill)}`,
+      btnText:"Работать",
+      onClick: ()=>{
+        if(!useAction(30)) return;
+        const inc = 260*S.skill;
+        S.money += inc;
+        addLog(`Работа: +${rub(inc)} ✅`, "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🚀 Проект/фриланс",
+      text:"Риск: шанс провала 25%, зато доход выше.",
+      cost:`Энергия: -40 • Доход: 420×Навык = ${rub(420*S.skill)}`,
+      btnText:"Делать",
+      onClick: ()=>{
+        if(!useAction(40)) return;
+        const fail = Math.random() < 0.25;
+        if(fail){
+          const loss = 120*S.skill;
+          S.money = Math.max(0, S.money - loss);
+          addLog(`Фриланс сорвался 😵 -${rub(loss)}`, "bad");
+        } else {
+          const inc = 420*S.skill;
+          S.money += inc;
+          addLog(`Фриланс: +${rub(inc)} ✅`, "good");
+        }
+        saveState(); render();
+      }
+    }));
+    screenTemplate(
+      "💼 Работа",
+      "Делай деньги. Навык усиливает доход.",
+      "Совет: учись 📑, чтобы зарабатывать быстрее.",
+      actions
+    );
+    return;
+  }
 
-      tasks.forEach((t, idx) => {
-        const li = document.createElement("li");
-        li.className = "item";
-        li.innerHTML = `
-          <input type="checkbox" ${t.done ? "checked" : ""} data-tk="${idx}" style="margin-top:2px;transform:scale(1.1)">
-          <div style="width:100%">
-            <b>${escapeHtml(t.text)}</b>
-            <div class="muted">${t.done ? "<span class='ok'>Сделано ✅</span>" : "В процессе…"}</div>
-            <div style="height:10px"></div>
-            <button class="btn btn-ghost" data-del-task="${idx}">🗑 Удалить</button>
-          </div>
-        `;
-        ul.appendChild(li);
-      });
+  if(currentTab === "study"){
+    const actions = [];
+    actions.push(actionCard({
+      title:"📑 Обучение",
+      text:"Поднимает навык. Это ускоряет рост дохода и бизнеса.",
+      cost:"Энергия: -25 • Навык: +1",
+      btnText:"Учиться",
+      onClick: ()=>{
+        if(!useAction(25)) return;
+        S.skill += 1;
+        addLog(`Учёба: навык стал ${S.skill} 🧠`, "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🧠 Интенсив",
+      text:"Сильнее прокачка, но дороже по энергии.",
+      cost:"Энергия: -45 • Навык: +2",
+      btnText:"Войти",
+      onClick: ()=>{
+        if(!useAction(45)) return;
+        S.skill += 2;
+        addLog(`Интенсив: навык стал ${S.skill} 🔥`, "good");
+        saveState(); render();
+      }
+    }));
+    screenTemplate(
+      "📑 Обучение",
+      "Навык = больше денег. Это основной буст.",
+      "Совет: комбинируй учебу + работу.",
+      actions
+    );
+    return;
+  }
 
-      ul.querySelectorAll("[data-tk]").forEach(ch => {
-        ch.onchange = () => {
-          const i = Number(ch.getAttribute("data-tk"));
-          const arr = store.get(tasksKey, []);
-          arr[i].done = ch.checked;
-          store.set(tasksKey, arr);
-          renderTasks();
-          renderKPI();
+  if(currentTab === "biz"){
+    const actions = [];
+    const price = 1200 * (S.biz + 1);
+    actions.push(actionCard({
+      title:"🚀 Запуск / улучшение бизнеса",
+      text:"Поднимает уровень бизнеса. Пассив начисляется раз в неделю.",
+      cost:`Цена: ${rub(price)} • Энергия: -30 • Бизнес: +1`,
+      btnText:"Улучшить",
+      onClick: ()=>{
+        if(!useAction(30)) return;
+        if(S.money < price){
+          // вернуть ход честно
+          S.actionsLeft += 1;
+          S.energy = clamp(S.energy + 30, 0, 100);
+          addLog(`Не хватает денег. Нужно ${rub(price)}.`, "bad");
+          saveState(); render();
+          return;
+        }
+        S.money -= price;
+        S.biz += 1;
+        addLog(`Бизнес вырос до ${S.biz} ✅ (-${rub(price)})`, "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"💰 Пожертвование (топ пожертвования)",
+      text:"Чисто игровая штука — пополняет 'Топ пожертвования'.",
+      cost:"Наличные: -500 ₽ • Пожертвования +500",
+      btnText:"Пожертвовать",
+      onClick: ()=>{
+        if(S.money < 500){ addLog("Не хватает 500 ₽","bad"); return; }
+        if(S.actionsLeft<=0){ addLog("Нет ходов.","bad"); return; }
+        S.actionsLeft -= 1;
+        S.money -= 500;
+        S.donations += 500;
+        addLog("Пожертвование 💰 +500 (в рейтинг).", "good");
+        saveState(); render();
+      }
+    }));
+    screenTemplate(
+      "🚀 Бизнес",
+      `Пассив в неделю сейчас: ${rub(passiveIncome())}. Уровень бизнеса: ${S.biz}.`,
+      "Фишка: бизнес уменьшает зависимость от работы.",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab === "bank"){
+    const actions = [];
+
+    actions.push(actionCard({
+      title:"🏦 Депозит",
+      text:"Положить наличные в банк. Можно снять в любой день.",
+      cost:"Наличные → Банк",
+      btnText:"Открыть",
+      extraHTML: `
+        <div class="row2">
+          <input id="depAmt" type="number" placeholder="Сумма (например 1000)" />
+          <button class="b-ghost" id="depDo">Положить</button>
+          <button class="b-ghost" id="wdDo">Снять</button>
+        </div>
+        <div class="small" style="margin-top:8px">Снятие: Банк → Наличные</div>
+      `,
+      onClick: ()=>{}
+    }));
+
+    actions.push(actionCard({
+      title:"💳 Кредит",
+      text:"Берёшь деньги сразу, но каждый день капают проценты (игровые).",
+      cost:"Кредит → Долг (проценты/день)",
+      btnText:"Открыть",
+      extraHTML: `
+        <div class="row2">
+          <input id="loanAmt" type="number" placeholder="Взять (например 2000)" />
+          <button class="b-ghost" id="loanDo">Взять</button>
+        </div>
+        <div style="height:8px"></div>
+        <div class="row2">
+          <input id="payAmt" type="number" placeholder="Погасить (например 500)" />
+          <button class="b-ghost" id="payDo">Погасить</button>
+        </div>
+        <div class="small" style="margin-top:8px">Процент по долгу/день: ${rub(dailyDebtInterest())}</div>
+      `,
+      onClick: ()=>{}
+    }));
+
+    // bind bank
+    setTimeout(()=>{
+      const depDo = document.getElementById("depDo");
+      const wdDo  = document.getElementById("wdDo");
+      if(depDo){
+        depDo.onclick = ()=>{
+          const v = Number(document.getElementById("depAmt").value || 0);
+          if(v<=0) return addLog("Введи сумму > 0","bad");
+          if(v>S.money) return addLog("Не хватает наличных","bad");
+          S.money -= v; S.bank += v;
+          addLog(`Депозит 🏦 +${rub(v)}`, "good");
+          saveState(); render();
         };
-      });
-
-      ul.querySelectorAll("[data-del-task]").forEach(btn => {
-        btn.onclick = () => {
-          const i = Number(btn.getAttribute("data-del-task"));
-          const arr = store.get(tasksKey, []);
-          arr.splice(i, 1);
-          store.set(tasksKey, arr);
-          renderTasks();
-          renderKPI();
+      }
+      if(wdDo){
+        wdDo.onclick = ()=>{
+          const v = Number(document.getElementById("depAmt").value || 0);
+          if(v<=0) return addLog("Введи сумму > 0","bad");
+          if(v>S.bank) return addLog("Не хватает в банке","bad");
+          S.bank -= v; S.money += v;
+          addLog(`Снятие 🏦 -${rub(v)} (в наличные)`, "good");
+          saveState(); render();
         };
-      });
-    }
+      }
 
-    $("addTaskBtn").onclick = () => {
-      const text = $("taskText").value.trim();
-      if(!text) return;
-      const tasks = store.get(tasksKey, []);
-      tasks.push({ text, done:false, at: Date.now() });
-      store.set(tasksKey, tasks);
-      $("taskText").value = "";
-      renderTasks();
-      renderKPI();
-    };
-    renderTasks();
+      const loanDo = document.getElementById("loanDo");
+      const payDo = document.getElementById("payDo");
+      if(loanDo){
+        loanDo.onclick = ()=>{
+          const v = Number(document.getElementById("loanAmt").value || 0);
+          if(v<=0) return addLog("Введи сумму > 0","bad");
+          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+          S.actionsLeft -= 1;
+          S.money += v;
+          S.debt += Math.floor(v * 1.10); // 10% "комиссия" в долг
+          addLog(`Кредит 💳 +${rub(v)} (долг вырос).`, "warn");
+          saveState(); render();
+        };
+      }
+      if(payDo){
+        payDo.onclick = ()=>{
+          const v = Number(document.getElementById("payAmt").value || 0);
+          if(v<=0) return addLog("Введи сумму > 0","bad");
+          if(v>S.money) return addLog("Не хватает наличных","bad");
+          if(S.debt<=0) return addLog("Долгов нет ✅","good");
+          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+          S.actionsLeft -= 1;
+          S.money -= v;
+          S.debt = Math.max(0, S.debt - v);
+          addLog(`Погашение 💳 -${rub(v)}. Долг: ${rub(S.debt)}`, "good");
+          saveState(); render();
+        };
+      }
+    }, 0);
 
-    // ===== KPI =====
-    function renderKPI(){
-      const notes = store.get(notesKey, []);
-      const tasks = store.get(tasksKey, []);
-      const done = tasks.filter(t=>t.done).length;
+    screenTemplate(
+      "🏦 Банк",
+      "Тут депозит, снятие и кредиты. Кредиты опасны из-за процентов каждый день.",
+      `Проценты по долгу сегодня: ${rub(dailyDebtInterest())}`,
+      actions
+    );
+    return;
+  }
 
-      $("kpiNotes").textContent = notes.length;
-      $("kpiTasks").textContent = tasks.length;
-      $("kpiDone").textContent = done;
-    }
-    renderKPI();
+  if(currentTab === "shop"){
+    const actions = [];
+    actions.push(actionCard({
+      title:"🍎 Еда",
+      text:"Нужна для восстановления энергии дома.",
+      cost:"Цена: 150 ₽ • +1 еда",
+      btnText:"Купить",
+      onClick: ()=>{
+        if(S.money < 150) return addLog("Не хватает 150 ₽","bad");
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        S.actionsLeft -= 1;
+        S.money -= 150;
+        S.inv.food += 1;
+        addLog("Купил еду 🍎 +1", "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🖥 Техника",
+      text:"Техника слегка увеличивает эффективность (прибавка к доходу/пассиву).",
+      cost:"Цена: 2 500 ₽ • +1 техника • бонус к доходу",
+      btnText:"Купить",
+      onClick: ()=>{
+        if(S.money < 2500) return addLog("Не хватает 2 500 ₽","bad");
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        S.actionsLeft -= 1;
+        S.money -= 2500;
+        S.inv.tech += 1;
+        addLog("Купил технику 🖥 +1", "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🛡 Экипировка (игровая)",
+      text:"Чисто для симулятора — открывает события/мини-ивенты позже.",
+      cost:"Цена: 1 800 ₽ • +1 экипировка",
+      btnText:"Купить",
+      onClick: ()=>{
+        if(S.money < 1800) return addLog("Не хватает 1 800 ₽","bad");
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        S.actionsLeft -= 1;
+        S.money -= 1800;
+        S.inv.gear += 1;
+        addLog("Купил экипировку 🛡 +1", "good");
+        saveState(); render();
+      }
+    }));
 
-    // ===== reset =====
-    $("resetBtn").onclick = () => {
-      const ok = confirm("Точно сбросить заметки/задачи/цели? Это нельзя отменить.");
-      if(!ok) return;
-      localStorage.removeItem(notesKey);
-      localStorage.removeItem(tasksKey);
-      localStorage.removeItem(goalKey);
-      localStorage.removeItem(calcKey);
-      renderNotes();
-      renderTasks();
-      loadGoal();
-      loadLastCalc();
-      renderKPI();
-      alert("Готово ✅");
-    };
-  </script>
+    screenTemplate(
+      "🏬 Магазин",
+      "Покупай еду/технику/экипировку. Еда — лучший способ держать энергию.",
+      "Совет: техника ускоряет рост капитала.",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab === "cars"){
+    const actions = [];
+    actions.push(actionCard({
+      title:"🚗 Машина (базовая)",
+      text:"Даёт бонус к заработку (меньше трат времени).",
+      cost:"Цена: 12 000 ₽ • +1 авто • бонус дохода",
+      btnText:"Купить",
+      onClick: ()=>{
+        if(S.money < 12000) return addLog("Не хватает 12 000 ₽","bad");
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        S.actionsLeft -= 1;
+        S.money -= 12000;
+        S.inv.car += 1;
+        addLog("Купил машину 🚗 +1", "good");
+        saveState(); render();
+      }
+    }));
+    screenTemplate(
+      "🚘 Автосалон",
+      "Авто повышает эффективность и капитал (в ранге тоже влияет).",
+      "Покупка авто — важная цель 🎯",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab === "realty"){
+    const actions = [];
+    const nextLvl = Math.min(3, S.homeLevel + 1);
+    const price = [0, 8000, 17000, 40000][nextLvl] || 0;
+    const names = ["Аренда","Комната","Квартира","Дом"];
+    actions.push(actionCard({
+      title:"🏠 Улучшить жильё",
+      text:`Сейчас: ${names[S.homeLevel]}. Следующее: ${names[nextLvl]}.`,
+      cost:`Цена: ${rub(price)} • Энергия: -25 • Жильё: +1`,
+      btnText:"Улучшить",
+      onClick: ()=>{
+        if(nextLvl === S.homeLevel) return addLog("Максимальный уровень жилья ✅","good");
+        if(!useAction(25)) return;
+        if(S.money < price){
+          // вернуть ход честно
+          S.actionsLeft += 1;
+          S.energy = clamp(S.energy + 25, 0, 100);
+          addLog(`Не хватает денег. Нужно ${rub(price)}.`, "bad");
+          saveState(); render();
+          return;
+        }
+        S.money -= price;
+        S.homeLevel = nextLvl;
+        addLog(`Жильё улучшено: ${names[S.homeLevel]} 🏠`, "good");
+        saveState(); render();
+      }
+    }));
+    actions.push(actionCard({
+      title:"🧾 Оплатить аренду/обслуживание заранее",
+      text:"Если не оплатить вовремя — штраф и стресс.",
+      cost:"Цена: 700 ₽ • Сдвиг оплаты +7 дней",
+      btnText:"Оплатить",
+      onClick: ()=>{
+        if(S.money < 700) return addLog("Не хватает 700 ₽","bad");
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        S.actionsLeft -= 1;
+        S.money -= 700;
+        S.rentDueIn = Math.min(14, S.rentDueIn + 7);
+        addLog("Оплатил жильё 🧾 (плюс дней до оплаты).", "good");
+        saveState(); render();
+      }
+    }));
+    screenTemplate(
+      "🏢 Недвижимость",
+      "Жильё влияет на расходы в неделю, но повышает капитал и комфорт.",
+      "Баланс: улучшай жильё, но следи за расходами.",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab === "crypto"){
+    const actions = [];
+    const price = S.cryptoPrice;
+    const ownedVal = Math.floor(S.cryptoCash * price);
+    actions.push(actionCard({
+      title:"🖥💶 Рынок крипты",
+      text:`Цена сейчас: ${rub(price)} за 1 монету. У тебя: ${S.cryptoCash} монет (≈ ${rub(ownedVal)}).`,
+      cost:"Покупка/продажа за наличные",
+      btnText:"Ок",
+      extraHTML: `
+        <div class="row2">
+          <input id="cAmt" type="number" placeholder="Количество (например 3)" />
+          <button class="b-ghost" id="cBuy">Купить</button>
+          <button class="b-ghost" id="cSell">Продать</button>
+        </div>
+      `,
+      onClick: ()=>{}
+    }));
+
+    setTimeout(()=>{
+      const buy = document.getElementById("cBuy");
+      const sell = document.getElementById("cSell");
+      if(buy){
+        buy.onclick = ()=>{
+          const q = Number(document.getElementById("cAmt").value||0);
+          if(q<=0) return addLog("Введи кол-во > 0","bad");
+          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+          const cost = q * S.cryptoPrice;
+          if(cost > S.money) return addLog("Не хватает наличных","bad");
+          S.actionsLeft -= 1;
+          S.money -= cost;
+          S.cryptoCash += q;
+          addLog(`Купил крипту 🖥💶 +${q} (-${rub(cost)})`, "good");
+          saveState(); render();
+        };
+      }
+      if(sell){
+        sell.onclick = ()=>{
+          const q = Number(document.getElementById("cAmt").value||0);
+          if(q<=0) return addLog("Введи кол-во > 0","bad");
+          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+          if(q > S.cryptoCash) return addLog("У тебя нет столько монет","bad");
+          const gain = q * S.cryptoPrice;
+          S.actionsLeft -= 1;
+          S.cryptoCash -= q;
+          S.money += gain;
+          addLog(`Продал крипту 🖥💶 -${q} (+${rub(gain)})`, "good");
+          saveState(); render();
+        };
+      }
+    }, 0);
+
+    screenTemplate(
+      "🖥💶 Крипта",
+      "Цена меняется каждый день. Можно как поднять, так и слиться 😅",
+      "Совет: не влезай в долг ради крипты.",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab === "tops"){
+    const actions = [];
+
+    const cryptoValue = Math.floor(S.cryptoCash * S.cryptoPrice);
+    // обновим рекорды
+    S.tops.bestNetWorth = Math.max(S.tops.bestNetWorth, netWorth());
+    S.tops.bestDonations = Math.max(S.tops.bestDonations, S.donations);
+    S.tops.bestCryptoValue = Math.max(S.tops.bestCryptoValue, cryptoValue);
+
+    actions.push(actionCard({
+      title:"Forbes 😎💵",
+      text:"Локальные топы (в твоём браузере). Это как рекорды аккаунта.",
+      cost:"—",
+      btnText:"Показать",
+      onClick: ()=>{},
+      extraHTML: `
+        <ul class="list" style="margin-top:10px">
+          <li><div><b>Топ баланс 💳</b><div class="small">Рекорд капитала</div></div><span class="badge">${rub(S.tops.bestNetWorth)}</span></li>
+          <li><div><b>Топ пожертвования 💰</b><div class="small">Сколько пожертвовал всего</div></div><span class="badge">${rub(S.tops.bestDonations)}</span></li>
+          <li><div><b>Топ крипта 🖥💶</b><div class="small">Лучшее значение крипты</div></div><span class="badge">${rub(S.tops.bestCryptoValue)}</span></li>
+        </ul>
+      `
+    }));
+
+    screenTemplate(
+      "Forbes 😎💵",
+      "Тут рекорды: капитал, пожертвования, крипта. Можно сделать глобально позже (через сервер).",
+      "Пока это локальные рекорды — зато бесплатно ✅",
+      actions
+    );
+    saveState();
+    return;
+  }
+
+  // fallback
+  screenTemplate("—", "—", "—", []);
+}
+
+/* ---------- achievements UI ---------- */
+function renderAchievements(){
+  const ul = $("achievements");
+  ul.innerHTML = "";
+  let done = 0;
+
+  ACH.forEach(a=>{
+    const ok = a.ok();
+    if(ok) done++;
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <div>
+        <b>${a.name} ${ok ? '<span class="good">✓</span>' : ''}</b>
+        <div class="small">${a.desc}</div>
+      </div>
+      <span class="badge">${ok ? "Открыто" : "Закрыто"}</span>
+    `;
+    ul.appendChild(li);
+  });
+
+  $("achvBadge").textContent = `${done}/${ACH.length}`;
+}
+
+/* ---------- inventory UI ---------- */
+function renderInventory(){
+  const ul = $("inventoryList");
+  ul.innerHTML = "";
+  const items = [
+    {k:"food", name:"Еда 🍎", v:S.inv.food},
+    {k:"tech", name:"Техника 🖥", v:S.inv.tech},
+    {k:"car",  name:"Машина 🚗", v:S.inv.car},
+    {k:"gear", name:"Экипировка 🛡", v:S.inv.gear},
+  ];
+  items.forEach(x=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<div><b>${x.name}</b><div class="small">Кол-во</div></div><span class="badge">${x.v}</span>`;
+    ul.appendChild(li);
+  });
+  $("invBadge").textContent = `Копилка: ${rub(S.safe)} • Крипта: ${S.cryptoCash} 🪙`;
+}
+
+/* ---------- main render ---------- */
+function render(){
+  ensureNonNegative();
+
+  // bonuses from items (простые, чтобы игралась)
+  // техника даёт +3% к доходам/пассиву за штуку (кап 30%)
+  const techBonus = Math.min(0.30, S.inv.tech * 0.03);
+  // авто даёт +5% к доходу (кап 25%)
+  const carBonus = Math.min(0.25, S.inv.car * 0.05);
+
+  // отображаем подсказку экономики недели
+  const wkCost = weeklyCosts();
+  const pass = passiveIncome();
+  $("weekEconomy").textContent = `Расход/нед: ${rub(wkCost)} • Пассив/нед: ${rub(pass)}`;
+
+  // применим бонусы к экранам работы/пассиву (просто в реальном начислении будем учитывать в nextDay и work)
+  // В этом файле бонусы учтём так:
+  // - бонус от техники/авто добавляется сразу к наличным при работе через множитель
+  // Для этого: перезапишем обработчики работы при рендере? Не надо. Сделаем в nextDay и в action handlers:
+  // (упростим) — бонусы учитываются в endOfDay начислениях, а работа уже норм.
+  // Чтобы не усложнять: бонусы учтём в конце дня как "эффективность".
+  // (Да, это чуть условно, зато просто.)
+
+  $("money").textContent = rub(S.money);
+  $("bank").textContent = rub(S.bank);
+  $("debt").textContent = rub(S.debt);
+  $("energy").textContent = String(S.energy);
+  $("skill").textContent = String(S.skill);
+  $("biz").textContent = String(S.biz);
+
+  $("dayPill").textContent = `День ${S.day}`;
+  $("weekPill").textContent = `Неделя ${week()}`;
+  $("rankPill").textContent = `Ранг: ${rankName()}`;
+  $("actionsLeft").textContent = `Ходов: ${S.actionsLeft}/3`;
+  $("netWorth").textContent = `Капитал: ${rub(netWorth())}`;
+
+  const ePct = Math.round((S.energy/100)*100);
+  $("energyBar").style.width = ePct + "%";
+
+  // home small label
+  const homeName = ["Аренда","Комната","Квартира","Дом"][S.homeLevel] || "Аренда";
+  $("homeSmall").textContent = homeName;
+
+  // log
+  const ul = $("log");
+  ul.innerHTML = "";
+  S.log.forEach(x=>{
+    const li = document.createElement("li");
+    li.innerHTML = x.type==="good" ? `✅ <span class="good">${escapeHtml(x.t)}</span>`
+              : x.type==="bad"  ? `⚠️ <span class="bad">${escapeHtml(x.t)}</span>`
+              : x.type==="warn" ? `💳 <span class="warn">${escapeHtml(x.t)}</span>`
+              : `• ${escapeHtml(x.t)}`;
+    ul.appendChild(li);
+  });
+
+  renderInventory();
+  renderAchievements();
+  renderScreen();
+}
+
+function escapeHtml(s){
+  return String(s||"")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+/* ---------- next day (core tick) ---------- */
+function nextDay(){
+  // конец дня: проценты по долгу
+  const int = dailyDebtInterest();
+  if(int>0){
+    S.debt += int;
+    addLog(`Проценты по долгу: +${rub(int)} (итого долг ${rub(S.debt)})`, "warn");
+  }
+
+  // цена крипты меняется каждый день
+  const prev = S.cryptoPrice;
+  nextCryptoPrice();
+  if(S.cryptoPrice > prev) addLog(`Крипта выросла 📈 ${rub(prev)} → ${rub(S.cryptoPrice)}`, "good");
+  if(S.cryptoPrice < prev) addLog(`Крипта упала 📉 ${rub(prev)} → ${rub(S.cryptoPrice)}`, "bad");
+
+  // движение аренды
+  S.rentDueIn -= 1;
+
+  // ночь: восстановление
+  S.day += 1;
+  S.actionsLeft = 3;
+  S.energy = clamp(S.energy + 25, 0, 100);
+
+  addLog(`Новый день: ${S.day}. Энергия восстановилась.`, "info");
+
+  // если просрочил жильё
+  if(S.rentDueIn <= 0){
+    const fine = 900 + S.homeLevel*250;
+    S.money = Math.max(0, S.money - fine);
+    S.rentDueIn = 7;
+    addLog(`Просрочка жилья 🧾 Штраф -${rub(fine)}.`, "bad");
+  }
+
+  // каждую неделю: расходы + пассив
+  if((S.day-1) % 7 === 0){
+    const cost = weeklyCosts();
+    const pass = passiveIncome();
+
+    // бонусы (просто и приятно)
+    const techBonus = Math.min(0.30, S.inv.tech * 0.03);
+    const carBonus  = Math.min(0.25, S.inv.car * 0.05);
+    const eff = 1 + techBonus + carBonus;
+    const passEff = Math.floor(pass * eff);
+
+    S.money = Math.max(0, S.money - cost + passEff);
+
+    addLog(`Конец недели: расходы -${rub(cost)}.`, cost ? "bad":"info");
+    if(passEff>0) addLog(`Пассив бизнеса: +${rub(passEff)} ✅`, "good");
+
+    // обновим локальные рекорды
+    const cryptoValue = Math.floor(S.cryptoCash * S.cryptoPrice);
+    S.tops.bestNetWorth = Math.max(S.tops.bestNetWorth, netWorth());
+    S.tops.bestDonations = Math.max(S.tops.bestDonations, S.donations);
+    S.tops.bestCryptoValue = Math.max(S.tops.bestCryptoValue, cryptoValue);
+  }
+
+  saveState();
+  render();
+}
+
+/* ---------- tab binds ---------- */
+$("tabs").addEventListener("click", (e)=>{
+  const btn = e.target.closest("[data-tab]");
+  if(!btn) return;
+  setTab(btn.getAttribute("data-tab"));
+});
+
+/* ---------- global buttons ---------- */
+$("nextDayBtn").onclick = nextDay;
+$("resetBtn").onclick = ()=>{
+  if(!confirm("Сбросить прогресс?")) return;
+  localStorage.removeItem(KEY);
+  S = defaultState();
+  saveState();
+  render();
+};
+
+/* ---------- init ---------- */
+render();
+</script>
 </body>
 </html>
