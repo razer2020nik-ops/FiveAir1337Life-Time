@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>FiveAir1337Life-Time</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#0b0f14;
+    color:#e6e6e6;
+}
+header{
+    padding:40px 20px;
+    text-align:center;
+}
+h1{
+    font-size:2.5em;
+    margin-bottom:10px;
+}
+p{
+    max-width:600px;
+    margin:0 auto 30px;
+    line-height:1.6;
+}
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+.buttons a{
+    text-decoration:none;
+    padding:15px 25px;
+    border:1px solid #2d7cff;
+    color:#2d7cff;
+    border-radius:5px;
+    transition:0.3s;
+}
+.buttons a:hover{
+    background:#2d7cff;
+    color:#000;
+}
+footer{
+    margin-top:60px;
+    padding:20px;
+    text-align:center;
+    font-size:0.9em;
+    color:#777;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>FiveAir1337Life-Time</h1>
+    <p>
+        Реальная жизнь без воды.<br>
+        Работа, деньги, навыки и бизнес — честно и по делу.
+    </p>
+
+    <div class="buttons">
+        <a href="#">Работа</a>
+        <a href="#">Деньги</a>
+        <a href="#">Навыки</a>
+        <a href="#">Бизнес</a>
+    </div>
+</header>
+
+<footer>
+    © FiveAir1337Life-Time
+</footer>
+<button id="showBtn">Показать текст</button>
+
+<p id="text" style="display:none;">
+Это сайт про реальную жизнь: работа, деньги, бизнес.
+</p>
+
+<script>
+document.getElementById("showBtn").onclick = function () {
+  let text = document.getElementById("text");
+
+  if (text.style.display === "none") {
+    text.style.display = "block";
+  } else {
+    text.style.display = "none";
+  }
+};
+</script>
+
+</body>
+</html>
