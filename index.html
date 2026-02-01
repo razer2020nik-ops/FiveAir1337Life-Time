@@ -1,179 +1,365 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>FiveAir1337Life-Time — Life Simulator</title>
+  <meta name="description" content="Life simulator: работа, бизнес, город, банк, кланы, семья, дуэли и т.д.">
+
   <style>
     :root{
-      --bg:#0b0f14;
-      --panel:#0f1620;
-      --panel2:#101b28;
-      --text:#e7eef7;
-      --muted:#9db0c7;
-      --line:#223042;
-      --accent:#2d7cff;
-      --good:#43d17a;
-      --bad:#ff5c5c;
-      --warn:#ffcc66;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --bg:#070A10;
+      --bg2:#0b0f14;
+      --panel: rgba(16, 24, 35, .78);
+      --panel2: rgba(13, 20, 30, .75);
+      --line: rgba(54, 80, 110, .35);
+      --text:#E9F1FF;
+      --muted:#9DB0C7;
+      --accent:#2D7CFF;
+      --accent2:#7AA9FF;
+      --good:#40D27A;
+      --bad:#FF5C5C;
+      --warn:#FFCC66;
+
       --r:18px;
       --r2:14px;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --shadow2: 0 12px 28px rgba(0,0,0,.35);
+
+      --t: 220ms;
+      --e: cubic-bezier(.2,.9,.2,1);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color: var(--text);
       background:
-        radial-gradient(1200px 600px at 15% 0%, rgba(45,124,255,.22), transparent 60%),
-        radial-gradient(900px 500px at 90% 20%, rgba(122,169,255,.14), transparent 55%),
-        var(--bg);
+        radial-gradient(1200px 680px at 14% 0%, rgba(45,124,255,.26), transparent 58%),
+        radial-gradient(900px 520px at 88% 16%, rgba(122,169,255,.14), transparent 56%),
+        radial-gradient(780px 420px at 40% 110%, rgba(64,210,122,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
     }
+
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .wrap{max-width:1280px;margin:0 auto;padding:16px}
+
+    /* TOPBAR */
     .topbar{
-      position:sticky;top:0;z-index:10;
-      backdrop-filter: blur(10px);
-      background: rgba(11,15,20,.72);
-      border-bottom:1px solid rgba(34,48,66,.65);
+      position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(14px);
+      background: rgba(7,10,16,.72);
+      border-bottom:1px solid var(--line);
     }
     .topbar-inner{
-      max-width:1200px;margin:0 auto;padding:12px 16px;
+      max-width:1280px;margin:0 auto;
+      padding:12px 16px;
       display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
-    .brand{display:flex;align-items:center;gap:12px}
+    .brand{
+      display:flex;align-items:center;gap:12px;min-width: 260px;
+    }
     .logo{
-      width:42px;height:42px;border-radius:16px;
+      width:44px;height:44px;border-radius:16px;
       display:grid;place-items:center;
-      background:linear-gradient(135deg, rgba(45,124,255,.95), rgba(122,169,255,.55));
-      color:#06101d;font-weight:1000;box-shadow:var(--shadow);
+      background: linear-gradient(135deg, rgba(45,124,255,.95), rgba(122,169,255,.55));
+      color:#06101d;
+      font-weight: 1000;
       letter-spacing:.4px;
+      box-shadow: var(--shadow2);
+      user-select:none;
+      transform: translateZ(0);
     }
-    .brand h1{margin:0;font-size:16px}
-    .brand .sub{margin:2px 0 0;color:var(--muted);font-size:12px}
-    .top-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-    button{
-      border:none;border-radius:14px;padding:11px 14px;
-      cursor:pointer;font-weight:900;
-      transition:.15s;
-    }
-    .b-primary{background:var(--accent);color:#07101b;box-shadow:0 10px 25px rgba(0,0,0,.18)}
-    .b-ghost{background:rgba(11,15,20,.25);color:var(--text);border:1px solid rgba(34,48,66,.9)}
-    .b-danger{background:rgba(255,92,92,.12);color:var(--bad);border:1px solid rgba(255,92,92,.35)}
-    .b-primary:hover,.b-ghost:hover,.b-danger:hover{transform:translateY(-1px)}
-    .pill{
-      font-size:12px;border:1px solid rgba(34,48,66,.85);
-      padding:6px 10px;border-radius:999px;color:var(--muted);
-      background:rgba(15,22,32,.35);
-      white-space:nowrap;
+    .brand h1{margin:0;font-size:16px;line-height:1.2}
+    .sub{
+      margin-top:2px;
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .layout{display:grid;grid-template-columns: 320px 1fr;gap:14px;margin-top:14px}
-    @media (max-width: 980px){ .layout{grid-template-columns:1fr} }
+    .top-actions{
+      display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;
+    }
+
+    .pill{
+      font-size:12px;
+      border:1px solid var(--line);
+      background: rgba(10,15,22,.35);
+      padding:7px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      white-space:nowrap;
+      display:flex;align-items:center;gap:8px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(122,169,255,.12);
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:11px 14px;
+      font-weight: 950;
+      cursor:pointer;
+      transition: transform var(--t) var(--e), filter var(--t) var(--e), background var(--t) var(--e);
+      letter-spacing:.1px;
+    }
+    .b-primary{
+      background: var(--accent);
+      color:#07101b;
+      box-shadow: 0 14px 30px rgba(0,0,0,.25);
+    }
+    .b-ghost{
+      background: rgba(11,15,20,.28);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .b-danger{
+      background: rgba(255,92,92,.12);
+      color: var(--bad);
+      border: 1px solid rgba(255,92,92,.35);
+    }
+    .b-primary:hover,.b-ghost:hover,.b-danger:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+    .b-primary:active,.b-ghost:active,.b-danger:active{
+      transform: translateY(0px) scale(.99);
+    }
+
+    /* LAYOUT */
+    .layout{
+      display:grid;
+      grid-template-columns: 340px 1fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 1020px){
+      .layout{grid-template-columns:1fr}
+      .brand{min-width:auto}
+    }
 
     .card{
-      background:linear-gradient(180deg, rgba(16,27,40,.90), rgba(15,22,32,.88));
-      border:1px solid rgba(34,48,66,.85);
-      border-radius:var(--r);
-      box-shadow:var(--shadow);
+      background: linear-gradient(180deg, rgba(16,24,35,.86), rgba(12,18,28,.78));
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
       padding:14px;
     }
+
     .title{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       margin-bottom:10px;
     }
     .title h2{margin:0;font-size:16px}
     .muted{color:var(--muted);font-size:13px;line-height:1.55}
+    .small{color:var(--muted);font-size:12px}
 
-    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .sep{height:1px;background: var(--line); margin:12px 0}
+
+    /* KPIs */
+    .kpis{display:grid;grid-template-columns:repeat(2, 1fr);gap:10px}
     .kpi{
-      border:1px solid rgba(34,48,66,.85);
-      border-radius:var(--r2);
-      padding:12px;background:rgba(11,15,20,.20);
+      background: rgba(11,15,20,.25);
+      border:1px solid var(--line);
+      border-radius: var(--r2);
+      padding:12px;
     }
     .kpi .lab{font-size:12px;color:var(--muted)}
     .kpi .val{font-size:20px;font-weight:1000;margin-top:4px}
-    .bar{height:10px;border-radius:999px;background:rgba(34,48,66,.75);overflow:hidden;margin-top:7px}
-    .bar > div{height:100%;background:var(--accent);width:0%}
-    .sep{height:1px;background:rgba(34,48,66,.7);margin:12px 0}
+    .bar{
+      height:10px;border-radius:999px;
+      background: rgba(54,80,110,.25);
+      overflow:hidden;
+      margin-top:7px;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: var(--accent);
+      transition: width 420ms var(--e);
+    }
 
-    .menu{display:grid;gap:8px;margin-top:10px}
+    /* MENU */
+    .menu{
+      display:grid;gap:8px;
+    }
     .tab{
-      padding:12px;border-radius:14px;
-      border:1px solid rgba(34,48,66,.85);
-      background:rgba(11,15,20,.18);
-      color:var(--text);
+      padding:12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(11,15,20,.20);
+      color: var(--text);
       text-align:left;
       display:flex;align-items:center;justify-content:space-between;gap:10px;
+      transition: transform var(--t) var(--e), background var(--t) var(--e), border-color var(--t) var(--e);
     }
     .tab small{color:var(--muted);font-weight:700}
+    .tab:hover{transform: translateY(-1px); border-color: rgba(45,124,255,.55)}
     .tab.active{
-      border-color:rgba(45,124,255,.90);
-      background:rgba(45,124,255,.12);
+      background: rgba(45,124,255,.12);
+      border-color: rgba(45,124,255,.70);
     }
 
-    .grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
-    @media (max-width: 980px){ .grid2{grid-template-columns:1fr} }
+    /* MAIN */
+    .main-grid{
+      display:grid;grid-template-columns: 1.15fr .85fr;
+      gap:14px;
+    }
+    @media (max-width: 1020px){
+      .main-grid{grid-template-columns:1fr}
+    }
 
+    /* ACTIONS */
     .actions{display:grid;gap:10px}
     .action{
-      border:1px solid rgba(34,48,66,.85);
-      border-radius:14px;
-      padding:12px;background:rgba(11,15,20,.18);
+      background: rgba(11,15,20,.18);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding:12px;
+      transition: transform var(--t) var(--e), border-color var(--t) var(--e);
     }
-    .action .row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .action:hover{transform: translateY(-1px); border-color: rgba(122,169,255,.40)}
+    .action .row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
     .action b{display:block;margin-bottom:4px}
-    .small{font-size:12px;color:var(--muted)}
+    .badge{
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(15,22,32,.25);
+      padding:5px 9px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
     .good{color:var(--good);font-weight:1000}
     .bad{color:var(--bad);font-weight:1000}
     .warn{color:var(--warn);font-weight:1000}
 
     input, select{
       width:100%;
-      background:rgba(11,15,20,.28);
-      border:1px solid rgba(34,48,66,.9);
+      background: rgba(11,15,20,.28);
+      border:1px solid var(--line);
       border-radius:14px;
-      padding:12px 12px;
-      color:var(--text);
+      padding:12px;
+      color: var(--text);
       outline:none;
+      transition: border-color var(--t) var(--e);
     }
+    input:focus,select:focus{border-color: rgba(45,124,255,.65)}
     .row2{display:flex;gap:10px;flex-wrap:wrap}
-    .row2 > *{flex:1 1 160px}
+    .row2>*{flex:1 1 160px}
 
+    /* LOG */
     .log{
-      margin:0;padding:0;list-style:none;display:grid;gap:8px;
-      max-height:340px;overflow:auto;
+      margin:0;padding:0;list-style:none;
+      display:grid;gap:8px;
+      max-height: 420px;
+      overflow:auto;
+      padding-right:4px;
     }
     .log li{
-      border:1px solid rgba(34,48,66,.8);
-      background:rgba(11,15,20,.18);
-      border-radius:14px;padding:10px;
+      background: rgba(11,15,20,.16);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px;
       font-size:13px;
+      animation: pop 260ms var(--e) both;
+    }
+    @keyframes pop{from{transform:translateY(6px);opacity:.0}to{transform:translateY(0);opacity:1}}
+
+    /* Lists */
+    .list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+    .list li{
+      background: rgba(11,15,20,.14);
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
     }
 
-    .list{
-      margin:0;padding:0;list-style:none;display:grid;gap:10px;
+    /* Screen transition */
+    .screen{
+      position:relative;
+      min-height: 540px;
     }
-    .list li{
-      border:1px solid rgba(34,48,66,.85);
-      background:rgba(11,15,20,.16);
-      border-radius:14px;padding:12px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    .screen-inner{
+      animation: fadeIn 260ms var(--e) both;
     }
-    .badge{
-      font-size:12px;color:var(--muted);
-      border:1px solid rgba(34,48,66,.85);
-      padding:4px 8px;border-radius:999px;
-      background:rgba(15,22,32,.25);
-      white-space:nowrap;
+    @keyframes fadeIn{
+      from{opacity:.0; transform: translateY(8px)}
+      to{opacity:1; transform: translateY(0)}
     }
-    footer{
-      padding:18px 0 28px;
-      color:var(--muted);
-      text-align:center;
-      font-size:12px;
+
+    /* MODAL */
+    .modal-backdrop{
+      position:fixed;inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;justify-content:center;
+      padding:16px;
+      z-index: 100;
     }
+    .modal-backdrop.open{display:flex;animation: fade 160ms var(--e) both}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+    .modal{
+      width:min(620px, 100%);
+      background: linear-gradient(180deg, rgba(16,24,35,.95), rgba(11,15,20,.92));
+      border:1px solid rgba(122,169,255,.25);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding:14px;
+      transform: translateZ(0);
+    }
+    .modal h3{margin:0 0 6px}
+    .modal .muted{margin:0 0 10px}
+    .modal .actions{margin-top:10px}
+    .modal .close{
+      float:right;
+      background: rgba(11,15,20,.28);
+      border:1px solid var(--line);
+      color: var(--text);
+      border-radius: 12px;
+      padding:9px 12px;
+      box-shadow:none;
+    }
+
+    /* TOASTS */
+    .toasts{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      display:grid;
+      gap:10px;
+      z-index: 200;
+    }
+    .toast{
+      width:min(380px, calc(100vw - 32px));
+      background: rgba(16,24,35,.92);
+      border:1px solid rgba(122,169,255,.20);
+      border-radius: 16px;
+      padding:12px 12px;
+      box-shadow: var(--shadow2);
+      animation: toastIn 260ms var(--e) both;
+      font-size:13px;
+    }
+    @keyframes toastIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .toast .t{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .toast .x{
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor:pointer;
+      font-weight:900;
+    }
+
+    footer{padding:18px 0 28px;color:var(--muted);text-align:center;font-size:12px}
+    .mono{font-family:var(--mono)}
   </style>
 </head>
 
@@ -184,14 +370,16 @@
         <div class="logo">5A</div>
         <div>
           <h1>FiveAir1337Life-Time</h1>
-          <div class="sub">Life Simulator • город • деньги • бизнес • ранги</div>
+          <div class="sub">город • 100 работ • банк • кланы • семья • дуэли • ограбления</div>
         </div>
       </div>
+
       <div class="top-actions">
-        <div class="pill" id="dayPill">День 1</div>
-        <div class="pill" id="weekPill">Неделя 1</div>
-        <div class="pill" id="rankPill">Ранг: Новичок</div>
+        <div class="pill"><span class="dot"></span><span id="dayPill">День 1</span></div>
+        <div class="pill">Неделя: <b id="weekPill">1</b></div>
+        <div class="pill">Ранг: <b id="rankPill">Новичок</b></div>
         <button class="b-primary" id="nextDayBtn">📅 Следующий день</button>
+        <button class="b-ghost" id="saveBtn">💾 Сохранить</button>
         <button class="b-danger" id="resetBtn">♻️ Сброс</button>
       </div>
     </div>
@@ -199,43 +387,46 @@
 
   <div class="wrap">
     <div class="layout">
-      <!-- LEFT: profile + city -->
+      <!-- LEFT -->
       <aside class="card">
         <div class="title">
           <h2>👤 Профиль</h2>
-          <span class="badge" id="actionsLeft">Ходов: 3/3</span>
+          <span class="badge" id="actionsLeft">Ходы: 3/3</span>
         </div>
 
         <div class="kpis">
           <div class="kpi">
             <div class="lab">💰 Наличные</div>
             <div class="val" id="money">0 ₽</div>
-            <div class="small">Трата/доход в действиях</div>
+            <div class="small">покупки/работа</div>
           </div>
           <div class="kpi">
             <div class="lab">🏦 Банк</div>
             <div class="val" id="bank">0 ₽</div>
-            <div class="small">Депозит/снятие</div>
+            <div class="small">депозит</div>
           </div>
+
           <div class="kpi">
             <div class="lab">⚡ Энергия</div>
             <div class="val" id="energy">100</div>
             <div class="bar"><div id="energyBar"></div></div>
           </div>
           <div class="kpi">
+            <div class="lab">⭐ Уровень</div>
+            <div class="val"><span id="lvl">1</span> <span class="small mono">XP</span></div>
+            <div class="bar"><div id="xpBar"></div></div>
+            <div class="small"><span id="xpText">0/100</span></div>
+          </div>
+
+          <div class="kpi">
             <div class="lab">🧠 Навык</div>
             <div class="val" id="skill">1</div>
-            <div class="small">Влияет на доход</div>
-          </div>
-          <div class="kpi">
-            <div class="lab">🏢 Бизнес</div>
-            <div class="val" id="biz">0</div>
-            <div class="small">Пассив в неделю</div>
+            <div class="small">открывает работы</div>
           </div>
           <div class="kpi">
             <div class="lab">💳 Долг</div>
             <div class="val" id="debt">0 ₽</div>
-            <div class="small">Проценты в конце дня</div>
+            <div class="small">проценты/день</div>
           </div>
         </div>
 
@@ -247,15 +438,18 @@
         </div>
 
         <div class="menu" id="tabs">
-          <button class="tab active" data-tab="home">🏠 Дом <small id="homeSmall"></small></button>
-          <button class="tab" data-tab="work">💼 Работа <small>доход</small></button>
+          <button class="tab active" data-tab="home">🏠 Дом <small id="homeSmall">аренда</small></button>
+          <button class="tab" data-tab="jobs">💼 Работы <small id="jobsSmall">100</small></button>
           <button class="tab" data-tab="study">📑 Обучение <small>навык</small></button>
           <button class="tab" data-tab="biz">🚀 Бизнес <small>пассив</small></button>
-          <button class="tab" data-tab="bank">🏦 Банк <small>депозит/кредит</small></button>
-          <button class="tab" data-tab="shop">🏬 Магазин <small>еда/техника</small></button>
-          <button class="tab" data-tab="cars">🚘 Автосалон <small>машины</small></button>
-          <button class="tab" data-tab="realty">🏢 Недвижимость <small>улучшение</small></button>
+          <button class="tab" data-tab="bank">🏦 Банк <small>кредиты</small></button>
+          <button class="tab" data-tab="shop">🏬 Магазин <small>еда/тех</small></button>
+          <button class="tab" data-tab="realty">🏢 Жильё <small>аренда</small></button>
           <button class="tab" data-tab="crypto">🖥💶 Крипта <small>рынок</small></button>
+          <button class="tab" data-tab="arena">🤺 Дуэль <small>риск</small></button>
+          <button class="tab" data-tab="heist">🪓 Ограбление <small>оч. риск</small></button>
+          <button class="tab" data-tab="family">👩‍❤️‍👨 Семья <small>ЗАГС</small></button>
+          <button class="tab" data-tab="clan">🛡 Клан <small>склад</small></button>
           <button class="tab" data-tab="tops">Forbes 😎💵 <small>топы</small></button>
         </div>
 
@@ -267,38 +461,37 @@
         </div>
         <ul class="list" id="inventoryList"></ul>
 
-        <footer style="padding:14px 0 0;text-align:left">
-          💾 Всё сохраняется автоматически в браузере.
-        </footer>
+        <div class="sep"></div>
+
+        <div class="title">
+          <h2>🎯 Достижения</h2>
+          <span class="badge" id="achvBadge">0/0</span>
+        </div>
+        <ul class="list" id="achievements"></ul>
       </aside>
 
-      <!-- RIGHT: content + log -->
-      <main class="grid2">
-        <section class="card">
-          <div class="title">
-            <h2 id="screenTitle">🏠 Дом</h2>
-            <span class="badge" id="screenHint">Выбери действие</span>
+      <!-- RIGHT -->
+      <main class="main-grid">
+        <section class="card screen">
+          <div class="screen-inner" id="screenRoot">
+            <div class="title">
+              <h2 id="screenTitle">🏠 Дом</h2>
+              <span class="badge" id="screenHint">выбери действие</span>
+            </div>
+            <div class="muted" id="screenDesc"></div>
+            <div class="sep"></div>
+            <div class="actions" id="screenActions"></div>
           </div>
-
-          <div class="muted" id="screenDesc"></div>
-          <div class="sep"></div>
-
-          <div class="actions" id="screenActions"></div>
-
-          <div class="sep"></div>
-          <div class="title">
-            <h2>🎯 Цели и достижения</h2>
-            <span class="badge" id="achvBadge">0/0</span>
-          </div>
-          <ul class="list" id="achievements"></ul>
         </section>
 
         <section class="card">
           <div class="title">
             <h2>📰 События</h2>
-            <span class="badge" id="weekEconomy">—</span>
+            <span class="badge" id="economyHint">—</span>
           </div>
           <ul class="log" id="log"></ul>
+          <div class="sep"></div>
+          <div class="small">💾 Всё сохраняется автоматически. (А ещё есть кнопка “Сохранить”.)</div>
         </section>
       </main>
     </div>
@@ -306,64 +499,186 @@
     <footer>© FiveAir1337Life-Time • Life Simulator</footer>
   </div>
 
+  <!-- MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <button class="close" id="modalClose">✕</button>
+      <h3 id="modalTitle">—</h3>
+      <p class="muted" id="modalText">—</p>
+      <div class="actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <!-- TOASTS -->
+  <div class="toasts" id="toasts"></div>
+
 <script>
 /* =========================
-   FiveAir1337Life-Time SIM
+   FiveAir1337Life-Time v3
+   - Smooth UI + 100 jobs
+   - Unlock by level/skill
+   - Duel / Heist / Clan / Family
    ========================= */
 
-const KEY = "fa_lifetime_sim_v2";
-const $ = (id) => document.getElementById(id);
+const KEY = "fa_lifetime_v3";
+const $ = (id)=>document.getElementById(id);
 
-const RANKS = [
-  {name:"Новичок", nw:0},
-  {name:"Работяга", nw:5000},
-  {name:"Стажёр бизнеса", nw:15000},
-  {name:"Предприниматель", nw:40000},
-  {name:"Бизнесмен", nw:90000},
-  {name:"Forbes 😎💵", nw:200000},
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const rub=(n)=>Number(n||0).toLocaleString("ru-RU")+" ₽";
+const now=()=>Date.now();
+
+function toast(msg, type="info"){
+  const box = $("toasts");
+  const t = document.createElement("div");
+  t.className="toast";
+  t.innerHTML = `
+    <div class="t">
+      <div>${type==="good"?"✅":type==="bad"?"⚠️":type==="warn"?"💳":"•"} ${escapeHtml(msg)}</div>
+      <button class="x">✕</button>
+    </div>
+  `;
+  t.querySelector(".x").onclick=()=>t.remove();
+  box.appendChild(t);
+  setTimeout(()=>{ if(t.isConnected) t.remove(); }, 4200);
+}
+
+function openModal(title, text, buttons=[]){
+  $("modalTitle").textContent = title;
+  $("modalText").textContent = text;
+  const a = $("modalActions");
+  a.innerHTML="";
+  buttons.forEach(b=>{
+    const btn = document.createElement("button");
+    btn.className = b.kind==="danger" ? "b-danger"
+                 : b.kind==="ghost"  ? "b-ghost"
+                 : "b-primary";
+    btn.textContent = b.text;
+    btn.onclick = ()=>{ closeModal(); b.onClick && b.onClick(); };
+    a.appendChild(btn);
+  });
+  $("modalBackdrop").classList.add("open");
+}
+function closeModal(){ $("modalBackdrop").classList.remove("open"); }
+$("modalClose").onclick=closeModal;
+$("modalBackdrop").addEventListener("click",(e)=>{ if(e.target.id==="modalBackdrop") closeModal(); });
+
+/* ---------- DATA: 100 jobs ---------- */
+function buildJobs(){
+  // 10 тиров * 10 работ = 100
+  const tiers = [
+    {tier:1,  needLvl:1,  needSkill:1,  title:"Старт"},
+    {tier:2,  needLvl:2,  needSkill:2,  title:"Простой"},
+    {tier:3,  needLvl:3,  needSkill:3,  title:"Опыт"},
+    {tier:4,  needLvl:4,  needSkill:4,  title:"Уверенный"},
+    {tier:5,  needLvl:6,  needSkill:5,  title:"Профи"},
+    {tier:6,  needLvl:8,  needSkill:6,  title:"Сильный"},
+    {tier:7,  needLvl:10, needSkill:7,  title:"Эксперт"},
+    {tier:8,  needLvl:12, needSkill:8,  title:"Топ"},
+    {tier:9,  needLvl:14, needSkill:9,  title:"Элита"},
+    {tier:10, needLvl:16, needSkill:10, title:"Легенда"},
+  ];
+
+  const templates = [
+    ["Курьер", "подработка"],
+    ["Оператор", "офис"],
+    ["Помощник", "сервис"],
+    ["Менеджер", "продажи"],
+    ["Монтажёр", "контент"],
+    ["Дизайнер", "креатив"],
+    ["Верстальщик", "web"],
+    ["Разработчик", "код"],
+    ["Маркетолог", "трафик"],
+    ["Предприниматель", "рынок"],
+  ];
+
+  const jobs = [];
+  for(const t of tiers){
+    for(let i=0;i<10;i++){
+      const [role, tag] = templates[i];
+      const basePay = Math.floor(120 + t.tier*85 + i*18);
+      const energy = clamp(18 + t.tier*3 + Math.floor(i/2), 18, 55);
+      const risk = (i>=7 ? 0.22 : i>=4 ? 0.12 : 0.05) + t.tier*0.01; // риск "провала"
+      const xp = Math.floor(18 + t.tier*7 + i*2);
+      jobs.push({
+        id: `T${t.tier}-${i}`,
+        tier: t.tier,
+        name: `${role} • ${t.title} #${i+1}`,
+        tag,
+        needLvl: t.needLvl,
+        needSkill: t.needSkill,
+        basePay,
+        energy,
+        risk: clamp(risk, 0.03, 0.35),
+        xp
+      });
+    }
+  }
+  return jobs;
+}
+const JOBS = buildJobs();
+
+/* ---------- Achievements ---------- */
+const ACH = [
+  {id:"a1",  name:"💼 Первая работа", desc:"Выполни 1 работу", ok:S=>S.stats.jobsDone>=1},
+  {id:"a2",  name:"⭐ Уровень 5",     desc:"Достигни уровня 5", ok:S=>S.lvl>=5},
+  {id:"a3",  name:"🧠 Навык 5",       desc:"Навык 5+", ok:S=>S.skill>=5},
+  {id:"a4",  name:"🏦 Депозит",       desc:"Положи 5 000 ₽ в банк", ok:S=>S.bank>=5000},
+  {id:"a5",  name:"🏢 Жильё улучшено",desc:"Комната или выше", ok:S=>S.homeLevel>=1},
+  {id:"a6",  name:"🚀 Бизнес 3",      desc:"Бизнес 3+", ok:S=>S.biz>=3},
+  {id:"a7",  name:"🖥💶 Крипта",       desc:"Купи крипту", ok:S=>S.crypto.coins>0},
+  {id:"a8",  name:"🤺 Победа",        desc:"Выиграй дуэль", ok:S=>S.stats.duelsWin>=1},
+  {id:"a9",  name:"🪓 Рискованный",   desc:"Успешное ограбление", ok:S=>S.stats.heistsWin>=1},
+  {id:"a10", name:"👩‍❤️‍👨 Семья",     desc:"Создай семью (партнёр)", ok:S=>S.family.partner},
+  {id:"a11", name:"👫 ЗАГС",          desc:"Женись/выйди замуж", ok:S=>S.family.married},
+  {id:"a12", name:"🛡 Клан",          desc:"Вступи в клан", ok:S=>!!S.clan.name},
+  {id:"a13", name:"😎💵 Forbes",      desc:"Капитал 200 000 ₽+", ok:S=>netWorth(S)>=200000},
 ];
 
-const defaultState = () => ({
-  day: 1,
-  actionsLeft: 3,
-  money: 500,
-  bank: 0,
-  debt: 0,
-  energy: 100,
-  skill: 1,
-  biz: 0,
-  homeLevel: 0,     // 0 аренда, 1 комната, 2 квартира, 3 дом
-  rentDueIn: 7,     // дней до оплаты аренды/обслуживания
-  donations: 0,
-  // crypto
-  cryptoCash: 0, // сколько монет
-  cryptoPrice: 120, // ₽ за монету
-  // inventory
-  inv: {
-    food: 0,
-    tech: 0,
-    car: 0,
-    gear: 0
-  },
-  // simple "transfer" (копилка)
-  safe: 0,
-  // logs
-  log: [
-    {t:"Добро пожаловать! Выбери локацию слева и делай действия. 3 хода в день.", type:"info"}
-  ],
-  // local "tops"
-  tops: {
-    bestNetWorth: 0,
-    bestDonations: 0,
-    bestCryptoValue: 0
-  }
-});
+/* ---------- State ---------- */
+function defaultState(){
+  return {
+    day: 1,
+    actionsLeft: 3,
+    money: 800,
+    bank: 0,
+    debt: 0,
+    energy: 100,
 
-let S = loadState();
-let currentTab = "home";
+    lvl: 1,
+    xp: 0,
+    xpNeed: 100,
 
-/* ---------- storage ---------- */
-function loadState(){
+    skill: 1,
+    biz: 0,
+
+    homeLevel: 0, // 0 аренда, 1 комната, 2 квартира, 3 дом
+    rentDueIn: 7,
+
+    wanted: 0, // уровень "розыска" (игровое)
+    safe: 0,   // копилка
+
+    inv: { food: 0, tech: 0, gear: 0, car: 0 },
+
+    crypto: { price: 120, coins: 0 },
+
+    family: { partner:false, married:false, kids:0 },
+
+    clan: { name:"", level:0, storage:0 }, // storage - деньги в "складе"
+    stats: {
+      jobsDone:0,
+      duelsWin:0, duelsLose:0,
+      heistsWin:0, heistsLose:0
+    },
+
+    tops: { bestNW:0, bestDon:0, bestCrypto:0, donations:0 },
+
+    log: [
+      {t:"Добро пожаловать! Иди во вкладку «Работы» — там 100 работ. Чем выше уровень — тем больше доступно.", type:"info"}
+    ]
+  };
+}
+
+function load(){
   try{
     const v = localStorage.getItem(KEY);
     return v ? JSON.parse(v) : defaultState();
@@ -371,771 +686,1106 @@ function loadState(){
     return defaultState();
   }
 }
-function saveState(){
-  localStorage.setItem(KEY, JSON.stringify(S));
+function save(){ localStorage.setItem(KEY, JSON.stringify(S)); }
+
+let S = load();
+let currentTab = "home";
+
+/* ---------- Helpers (economy / rank / net worth) ---------- */
+function week(){ return Math.floor((S.day-1)/7)+1; }
+
+function netWorth(state=S){
+  const cryptoVal = Math.floor(state.crypto.coins * state.crypto.price);
+  const carVal = state.inv.car * 12000;
+  const techVal = state.inv.tech * 2500;
+  const homeVal = [0, 8000, 25000, 65000][state.homeLevel] || 0;
+  const clanVal = state.clan.storage || 0;
+  return Math.max(0, (state.money + state.bank + state.safe + cryptoVal + carVal + techVal + homeVal + clanVal) - state.debt);
 }
 
-/* ---------- utils ---------- */
-function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
-function rub(n){ return Number(n||0).toLocaleString("ru-RU")+" ₽"; }
-function week(){ return Math.floor((S.day-1)/7)+1; }
-function netWorth(){
-  // капитал = наличные + банк + копилка + ценность крипты + ценность авто/техники/жилья - долг
-  const cryptoVal = Math.floor(S.cryptoCash * S.cryptoPrice);
-  const carVal = S.inv.car * 12000;
-  const techVal = S.inv.tech * 2500;
-  const homeVal = [0, 8000, 25000, 65000][S.homeLevel] || 0;
-  return Math.max(0, (S.money + S.bank + S.safe + cryptoVal + carVal + techVal + homeVal) - S.debt);
-}
+const RANKS = [
+  {name:"Новичок", nw:0},
+  {name:"Работяга", nw:6000},
+  {name:"Делец", nw:20000},
+  {name:"Предприниматель", nw:55000},
+  {name:"Бизнесмен", nw:120000},
+  {name:"Forbes 😎💵", nw:200000},
+];
 function rankName(){
   const nw = netWorth();
   let r = RANKS[0].name;
   for(const x of RANKS){ if(nw >= x.nw) r = x.name; }
   return r;
 }
+
+function weeklyCosts(){
+  // расходы растут с жильем и семьёй
+  const base = 650 + (S.skill-1)*140;
+  const homeMul = [1.0, 1.25, 1.55, 2.1][S.homeLevel] || 1.0;
+  const fam = (S.family.partner ? 1.2 : 1.0) * (S.family.married ? 1.1 : 1.0) * (1 + S.family.kids*0.15);
+  return Math.floor(base * homeMul * fam);
+}
+function passiveIncome(){
+  // бизнес + техника/авто бонус
+  const techB = Math.min(0.30, S.inv.tech * 0.03);
+  const carB  = Math.min(0.25, S.inv.car * 0.05);
+  const eff = 1 + techB + carB;
+  return Math.floor((S.biz * (420 + S.skill*55)) * eff);
+}
+function dailyDebtInterest(){
+  if(S.debt<=0) return 0;
+  // чем выше розыск — тем хуже условия
+  const k = 0.03 + Math.min(0.02, S.wanted*0.002);
+  return Math.floor(S.debt * k);
+}
+
+/* ---------- XP / Leveling ---------- */
+function addXP(x){
+  S.xp += x;
+  while(S.xp >= S.xpNeed){
+    S.xp -= S.xpNeed;
+    S.lvl += 1;
+    S.xpNeed = Math.floor(100 + (S.lvl-1)*35);
+    // небольшой рост энергии "в потолок" не делаем, но даём бонус деньгами
+    const bonus = 250 + S.lvl*25;
+    S.money += bonus;
+    addLog(`ЛЕВЕЛ АП! ⭐ Уровень ${S.lvl}. Бонус: +${rub(bonus)}`, "good");
+    toast(`Уровень ${S.lvl} открыт!`, "good");
+  }
+}
+
+/* ---------- Logs ---------- */
 function addLog(text, type="info"){
   S.log.unshift({t:text, type});
-  if(S.log.length>70) S.log.pop();
-  saveState();
+  if(S.log.length>80) S.log.pop();
+  save();
   render();
 }
 function useAction(energyCost){
   if(S.actionsLeft<=0){ addLog("Ходов на сегодня нет. Жми «Следующий день».","bad"); return false; }
-  if(S.energy<energyCost){ addLog("Не хватает энергии. Съешь еду или отдохни.","bad"); return false; }
+  if(S.energy<energyCost){ addLog("Не хватает энергии. Купи еду или отдыхай.","bad"); return false; }
   S.actionsLeft -= 1;
   S.energy = clamp(S.energy - energyCost, 0, 100);
   return true;
 }
-function ensureNonNegative(){
-  S.money = Math.max(0, S.money);
-  S.bank = Math.max(0, S.bank);
-  S.debt = Math.max(0, S.debt);
-  S.safe = Math.max(0, S.safe);
-}
 
-/* ---------- economy rules ---------- */
-function weeklyCosts(){
-  // расходы на жизнь растут с уровнем жилья и навыком
-  const base = 600 + (S.skill-1)*140;
-  const homeMul = [1.0, 1.25, 1.55, 2.1][S.homeLevel] || 1.0;
-  return Math.floor(base * homeMul);
-}
-function passiveIncome(){
-  // бизнес даёт пассив раз в неделю
-  return Math.floor(S.biz * (420 + S.skill*55));
-}
-function dailyDebtInterest(){
-  // процент по долгу в день (не жёсткий, но ощутимый)
-  if(S.debt<=0) return 0;
-  return Math.floor(S.debt * 0.03); // 3% в день (игровое)
-}
-
-/* ---------- crypto market ---------- */
+/* ---------- Crypto ---------- */
 function nextCryptoPrice(){
-  // небольшая случайная волатильность
-  const change = (Math.random()*0.22 - 0.10); // -10%..+12%
-  const p = Math.max(20, Math.floor(S.cryptoPrice * (1+change)));
-  S.cryptoPrice = p;
+  const change = (Math.random()*0.22 - 0.10); // -10..+12%
+  S.crypto.price = Math.max(20, Math.floor(S.crypto.price*(1+change)));
 }
 
-/* ---------- achievements/goals ---------- */
-const ACH = [
-  {id:"a1", name:"💼 Первая зарплата", desc:"Заработай 1 000 ₽", ok: ()=> (S.money + S.bank + S.safe) >= 1000},
-  {id:"a2", name:"🧠 Прокачка", desc:"Навык 5+", ok: ()=> S.skill >= 5},
-  {id:"a3", name:"🏢 Бизнес старт", desc:"Бизнес 1+", ok: ()=> S.biz >= 1},
-  {id:"a4", name:"🏠 Улучшил жильё", desc:"Жильё 1+", ok: ()=> S.homeLevel >= 1},
-  {id:"a5", name:"🚘 Первая машина", desc:"Купи 1 авто", ok: ()=> S.inv.car >= 1},
-  {id:"a6", name:"🏦 В банке есть деньги", desc:"Депозит 5 000 ₽+", ok: ()=> S.bank >= 5000},
-  {id:"a7", name:"🖥💶 Крипто-инвестор", desc:"Купи крипту", ok: ()=> S.cryptoCash > 0},
-  {id:"a8", name:"😎💵 Forbes", desc:"Капитал 200 000 ₽+", ok: ()=> netWorth() >= 200000},
-];
-
-/* ---------- screens ---------- */
+/* ---------- Screen rendering ---------- */
 function setTab(tab){
   currentTab = tab;
   document.querySelectorAll(".tab").forEach(b=>{
     b.classList.toggle("active", b.getAttribute("data-tab")===tab);
   });
+  // перерисовать с анимацией
+  const root = $("screenRoot");
+  root.classList.remove("screen-inner");
+  void root.offsetWidth; // restart anim
+  root.classList.add("screen-inner");
   renderScreen();
 }
 
-function screenTemplate(title, desc, hint, actions){
-  $("screenTitle").textContent = title;
-  $("screenDesc").textContent = desc;
-  $("screenHint").textContent = hint;
-  const box = $("screenActions");
-  box.innerHTML = "";
-  actions.forEach(a => box.appendChild(a));
-}
-
-function actionCard({title, text, cost, btnText, onClick, extraHTML=""}){
-  const wrap = document.createElement("div");
-  wrap.className = "action";
-  wrap.innerHTML = `
+function actionCard({title, text, cost, btnText, onClick, extraHTML="", disabled=false}){
+  const w = document.createElement("div");
+  w.className="action";
+  w.innerHTML = `
     <div class="row">
-      <div>
+      <div style="min-width:0">
         <b>${title}</b>
         <div class="muted">${text}</div>
         <div class="small" style="margin-top:6px">${cost}</div>
         ${extraHTML ? `<div style="margin-top:10px">${extraHTML}</div>` : ""}
       </div>
-      <button class="b-primary">${btnText}</button>
+      <button class="${disabled ? "b-ghost" : "b-primary"}" ${disabled?"disabled":""} style="${disabled?"opacity:.55;cursor:not-allowed":""}">
+        ${btnText}
+      </button>
     </div>
   `;
-  wrap.querySelector("button").onclick = onClick;
-  return wrap;
+  const btn = w.querySelector("button");
+  if(!disabled) btn.onclick = onClick;
+  return w;
 }
 
-/* ---------- location logic ---------- */
+function screenTemplate(title, desc, hint, actions){
+  $("screenTitle").textContent = title;
+  $("screenDesc").innerHTML = desc;
+  $("screenHint").textContent = hint;
+  const box = $("screenActions");
+  box.innerHTML="";
+  actions.forEach(a=>box.appendChild(a));
+}
+
+/* ---------- Screens: Home / Jobs / Study / Biz / Bank / Shop / Realty / Crypto / Duel / Heist / Family / Clan / Tops ---------- */
 function renderScreen(){
+  const actions=[];
   const nw = netWorth();
   const wkCost = weeklyCosts();
   const pass = passiveIncome();
   const debtInt = dailyDebtInterest();
-  const cryptoVal = Math.floor(S.cryptoCash * S.cryptoPrice);
 
-  if(currentTab === "home"){
+  if(currentTab==="home"){
     const homeName = ["Аренда","Комната","Квартира","Дом"][S.homeLevel] || "Аренда";
-    const rentText = `До оплаты: ${S.rentDueIn} дн. • Расход в неделю: ${rub(wkCost)} • Пассив: ${rub(pass)}`;
-    const actions = [];
-
     actions.push(actionCard({
-      title:"🍎 Еда (восстановить энергию)",
-      text:"Если энергия низкая — еда спасает. Еда берётся из инвентаря.",
-      cost:`Требует: 1×Еда • Энергия: +30`,
+      title:"🍎 Съесть еду",
+      text:"Еда восстанавливает энергию. Нужна, чтобы делать больше действий.",
+      cost:"Ход: -1 • Требует: 1×Еда • Энергия: +30",
       btnText:"Съесть",
+      disabled: S.inv.food<=0,
       onClick: ()=>{
-        if(S.actionsLeft<=0){ addLog("Нет ходов. Следующий день.","bad"); return; }
-        if(S.inv.food<=0){ addLog("Еды нет. Купи в магазине 🏬","bad"); return; }
-        S.actionsLeft -= 1;
-        S.inv.food -= 1;
-        S.energy = clamp(S.energy + 30, 0, 100);
-        addLog("Ты поел 🍎 Энергия +30.","good");
-        saveState(); render();
+        if(S.actionsLeft<=0) return addLog("Нет ходов.","bad");
+        if(S.inv.food<=0) return addLog("Еды нет. Купи в магазине 🏬","bad");
+        S.actionsLeft-=1;
+        S.inv.food-=1;
+        S.energy = clamp(S.energy+30, 0, 100);
+        addLog("Ты поел 🍎 Энергия +30.", "good");
+        save(); render();
       }
     }));
 
     actions.push(actionCard({
       title:"🛌 Отдых",
-      text:"Восстанавливает энергию. Полезно если ты выжат.",
+      text:"Восстановить силы (быстро и просто).",
       cost:"Ход: -1 • Энергия: +45",
       btnText:"Отдыхать",
       onClick: ()=>{
-        if(S.actionsLeft<=0){ addLog("Нет ходов. Следующий день.","bad"); return; }
-        S.actionsLeft -= 1;
-        S.energy = clamp(S.energy + 45, 0, 100);
-        addLog("Отдохнул 🛌 Энергия +45.","good");
-        saveState(); render();
+        if(S.actionsLeft<=0) return addLog("Нет ходов.","bad");
+        S.actionsLeft-=1;
+        S.energy=clamp(S.energy+45,0,100);
+        addLog("Отдых 🛌 Энергия +45.", "good");
+        save(); render();
       }
     }));
 
     actions.push(actionCard({
       title:"💸 Перевод в копилку",
-      text:"Переведи часть денег в копилку (чисто внутри игры).",
-      cost:"Наличные → Копилка",
-      btnText:"Перевести",
-      extraHTML: `
-        <div class="row2">
-          <input id="safeAmt" type="number" placeholder="Сумма (например 500)" />
-          <button class="b-ghost" id="safeDo">Ок</button>
-        </div>
-      `,
-      onClick: ()=>{}
+      text:"Переводи деньги в копилку (чисто игровая функция).",
+      cost:`Наличные → Копилка • Сейчас копилка: <span class="mono">${rub(S.safe)}</span>`,
+      btnText:"Открыть",
+      onClick: ()=>{
+        openModal("Перевод 💸", "Введи сумму перевода в копилку:", [
+          {text:"+500", kind:"primary", onClick:()=>doSafe(500)},
+          {text:"+1000", kind:"primary", onClick:()=>doSafe(1000)},
+          {text:"Снять 500", kind:"ghost", onClick:()=>doSafe(-500)},
+        ]);
+      }
     }));
 
-    // bind safe transfer
+    function doSafe(v){
+      if(v>0){
+        if(S.money < v) return toast("Не хватает наличных", "bad");
+        S.money -= v; S.safe += v;
+        addLog(`Перевод 💸 +${rub(v)} в копилку.`, "good");
+      } else {
+        const x = Math.abs(v);
+        if(S.safe < x) return toast("В копилке не хватает", "bad");
+        S.safe -= x; S.money += x;
+        addLog(`Снятие 💸 -${rub(x)} из копилки.`, "good");
+      }
+      save(); render();
+    }
+
+    screenTemplate(
+      "🏠 Дом",
+      `Капитал: <b class="good">${rub(nw)}</b> • Расход/нед: <b class="bad">${rub(wkCost)}</b> • Пассив/нед: <b class="good">${rub(pass)}</b> • % по долгу/день: <b class="warn">${rub(debtInt)}</b>`,
+      `${homeName} • Розыск: ${S.wanted}`,
+      actions
+    );
+    return;
+  }
+
+  if(currentTab==="jobs"){
+    // фильтр/категории
+    const unlocked = JOBS.filter(j => S.lvl>=j.needLvl && S.skill>=j.needSkill);
+    const locked = JOBS.length - unlocked.length;
+
+    const top = document.createElement("div");
+    top.className="action";
+    top.innerHTML = `
+      <div class="row">
+        <div>
+          <b>💼 Центр занятости</b>
+          <div class="muted">Доступно работ: <b class="good">${unlocked.length}</b> / ${JOBS.length} • Закрыто: <b class="bad">${locked}</b></div>
+          <div class="small">Чем выше ⭐ уровень и 🧠 навык — тем больше работ открыто.</div>
+          <div style="margin-top:10px" class="row2">
+            <select id="jobTier">
+              <option value="all">Все тиры</option>
+              ${[1,2,3,4,5,6,7,8,9,10].map(t=>`<option value="${t}">Тир ${t}</option>`).join("")}
+            </select>
+            <select id="jobSort">
+              <option value="pay">Сорт: доход</option>
+              <option value="risk">Сорт: риск</option>
+              <option value="energy">Сорт: энергия</option>
+            </select>
+          </div>
+        </div>
+        <button class="b-primary" id="jobHelpBtn">?</button>
+      </div>
+    `;
+    actions.push(top);
+
     setTimeout(()=>{
-      const doBtn = document.getElementById("safeDo");
-      if(doBtn){
-        doBtn.onclick = ()=>{
-          const v = Number(document.getElementById("safeAmt").value || 0);
-          if(v<=0) return addLog("Введи сумму > 0","bad");
-          if(v>S.money) return addLog("Не хватает наличных","bad");
-          S.money -= v; S.safe += v;
-          addLog(`Перевод 💸 +${rub(v)} в копилку.`, "good");
-          saveState(); render();
+      const help = document.getElementById("jobHelpBtn");
+      if(help){
+        help.onclick=()=>{
+          openModal("Как работают работы 💼",
+            "Выбирай работу → тратишь энергию → получаешь деньги и XP. Чем выше уровень/навык, тем лучше работы доступны.",
+            [{text:"Понял", kind:"primary", onClick:()=>{}}]
+          );
         };
       }
-    }, 0);
+    },0);
+
+    const list = document.createElement("div");
+    list.className="actions";
+    list.id="jobsListHost";
+    actions.push(list);
+
+    function renderJobsList(){
+      const tier = (document.getElementById("jobTier")?.value || "all");
+      const sort = (document.getElementById("jobSort")?.value || "pay");
+
+      let items = JOBS.slice();
+      if(tier!=="all") items = items.filter(j=>String(j.tier)===tier);
+
+      items.sort((a,b)=>{
+        if(sort==="pay") return (b.basePay - a.basePay);
+        if(sort==="risk") return (a.risk - b.risk);
+        if(sort==="energy") return (a.energy - b.energy);
+        return 0;
+      });
+
+      const host = document.getElementById("jobsListHost");
+      if(!host) return;
+      host.innerHTML="";
+
+      items.forEach(j=>{
+        const ok = (S.lvl>=j.needLvl && S.skill>=j.needSkill);
+        const pay = Math.floor(j.basePay * (1 + Math.min(0.30, S.inv.tech*0.03) + Math.min(0.25, S.inv.car*0.05)));
+        const riskPct = Math.round(j.risk*100);
+
+        host.appendChild(actionCard({
+          title:`${ok ? "✅" : "🔒"} ${j.name}`,
+          text:`Тир ${j.tier} • ${j.tag} • Требование: ⭐${j.needLvl}+ и 🧠${j.needSkill}+`,
+          cost:`Энергия: -${j.energy} • Доход: ~${rub(pay)} • Риск провала: ${riskPct}% • XP: +${j.xp}`,
+          btnText: ok ? "Работать" : "Закрыто",
+          disabled: !ok,
+          onClick: ()=>doJob(j)
+        }));
+      });
+    }
+
+    function doJob(job){
+      if(!useAction(job.energy)) return;
+      // провал/успех (провал = часть дохода теряется + розыск чуть растёт на "сомнительных")
+      const fail = Math.random() < job.risk;
+      const bonus = (1 + Math.min(0.30, S.inv.tech*0.03) + Math.min(0.25, S.inv.car*0.05));
+      const pay = Math.floor(job.basePay * bonus);
+
+      if(fail){
+        const got = Math.floor(pay * 0.35);
+        S.money += got;
+        addXP(Math.floor(job.xp * 0.50));
+        addLog(`Работа не задалась 😵 (${job.name}) +${rub(got)} • XP +${Math.floor(job.xp*0.5)}`, "bad");
+        toast("Провал работы — но хоть что-то заработал", "warn");
+      } else {
+        S.money += pay;
+        addXP(job.xp);
+        addLog(`Работа: ${job.name} +${rub(pay)} • XP +${job.xp}`, "good");
+      }
+
+      S.stats.jobsDone += 1;
+      // шанс роста навыка
+      if(Math.random() < 0.08){
+        S.skill += 1;
+        addLog(`Навык вырос 🧠 → ${S.skill}`, "good");
+        toast("Навык +1", "good");
+      }
+
+      save(); render();
+      renderJobsList();
+    }
 
     screenTemplate(
-      `🏠 Дом — ${homeName}`,
-      `Тут восстановление, еда, копилка. ${rentText}`,
-      `Капитал: ${rub(nw)} • Крипта: ${rub(cryptoVal)} • % по долгу/день: ${rub(debtInt)}`,
+      "💼 Работы (100)",
+      `Чем выше ⭐ уровень и 🧠 навык — тем больше работ и возможностей. Доступно сейчас: <b class="good">${unlocked.length}</b> / ${JOBS.length}.`,
+      `Уровень ${S.lvl} • Навык ${S.skill}`,
       actions
     );
+
+    setTimeout(()=>{
+      const t = document.getElementById("jobTier");
+      const s = document.getElementById("jobSort");
+      if(t) t.onchange = renderJobsList;
+      if(s) s.onchange = renderJobsList;
+      renderJobsList();
+    },0);
+
     return;
   }
 
-  if(currentTab === "work"){
-    const actions = [];
+  if(currentTab==="study"){
     actions.push(actionCard({
-      title:"💼 Подработка",
-      text:"Надёжно, но не жирно. Хорошо для старта.",
-      cost:`Энергия: -20 • Доход: 140×Навык = ${rub(140*S.skill)}`,
-      btnText:"Работать",
-      onClick: ()=>{
-        if(!useAction(20)) return;
-        const inc = 140*S.skill;
-        S.money += inc;
-        addLog(`Подработка: +${rub(inc)} ✅`, "good");
-        saveState(); render();
-      }
-    }));
-    actions.push(actionCard({
-      title:"🧑‍💻 Работа",
-      text:"Стабильно. Лучше подработки.",
-      cost:`Энергия: -30 • Доход: 260×Навык = ${rub(260*S.skill)}`,
-      btnText:"Работать",
-      onClick: ()=>{
-        if(!useAction(30)) return;
-        const inc = 260*S.skill;
-        S.money += inc;
-        addLog(`Работа: +${rub(inc)} ✅`, "good");
-        saveState(); render();
-      }
-    }));
-    actions.push(actionCard({
-      title:"🚀 Проект/фриланс",
-      text:"Риск: шанс провала 25%, зато доход выше.",
-      cost:`Энергия: -40 • Доход: 420×Навык = ${rub(420*S.skill)}`,
-      btnText:"Делать",
-      onClick: ()=>{
-        if(!useAction(40)) return;
-        const fail = Math.random() < 0.25;
-        if(fail){
-          const loss = 120*S.skill;
-          S.money = Math.max(0, S.money - loss);
-          addLog(`Фриланс сорвался 😵 -${rub(loss)}`, "bad");
-        } else {
-          const inc = 420*S.skill;
-          S.money += inc;
-          addLog(`Фриланс: +${rub(inc)} ✅`, "good");
-        }
-        saveState(); render();
-      }
-    }));
-    screenTemplate(
-      "💼 Работа",
-      "Делай деньги. Навык усиливает доход.",
-      "Совет: учись 📑, чтобы зарабатывать быстрее.",
-      actions
-    );
-    return;
-  }
-
-  if(currentTab === "study"){
-    const actions = [];
-    actions.push(actionCard({
-      title:"📑 Обучение",
-      text:"Поднимает навык. Это ускоряет рост дохода и бизнеса.",
-      cost:"Энергия: -25 • Навык: +1",
+      title:"📑 Учёба",
+      text:"Стабильно увеличивает навык. Навык открывает работы.",
+      cost:"Энергия: -25 • XP: +40 • Шанс: Навык +1",
       btnText:"Учиться",
       onClick: ()=>{
         if(!useAction(25)) return;
-        S.skill += 1;
-        addLog(`Учёба: навык стал ${S.skill} 🧠`, "good");
-        saveState(); render();
+        addXP(40);
+        if(Math.random()<0.45){ S.skill += 1; addLog(`Учёба: навык вырос → ${S.skill}`, "good"); toast("Навык +1", "good"); }
+        else addLog("Учёба: XP получен, навык не вырос в этот раз.", "info");
+        save(); render();
       }
     }));
+
     actions.push(actionCard({
-      title:"🧠 Интенсив",
-      text:"Сильнее прокачка, но дороже по энергии.",
-      cost:"Энергия: -45 • Навык: +2",
+      title:"🔥 Интенсив",
+      text:"Дорого по энергии, но быстрее прокачивает.",
+      cost:"Энергия: -45 • XP: +85 • Навык +1..2 (шанс)",
       btnText:"Войти",
       onClick: ()=>{
         if(!useAction(45)) return;
-        S.skill += 2;
-        addLog(`Интенсив: навык стал ${S.skill} 🔥`, "good");
-        saveState(); render();
+        addXP(85);
+        const gain = (Math.random()<0.55) ? 2 : 1;
+        S.skill += gain;
+        addLog(`Интенсив: навык +${gain} → ${S.skill}`, "good");
+        toast(`Навык +${gain}`, "good");
+        save(); render();
       }
     }));
-    screenTemplate(
-      "📑 Обучение",
-      "Навык = больше денег. Это основной буст.",
-      "Совет: комбинируй учебу + работу.",
+
+    screenTemplate("📑 Обучение",
+      "Прокачка навыка и XP. Больше навыка = больше работ и денег.",
+      "Совет: учёба + работа = быстрый рост",
       actions
     );
     return;
   }
 
-  if(currentTab === "biz"){
-    const actions = [];
-    const price = 1200 * (S.biz + 1);
+  if(currentTab==="biz"){
+    const price = 1500 * (S.biz + 1);
     actions.push(actionCard({
-      title:"🚀 Запуск / улучшение бизнеса",
-      text:"Поднимает уровень бизнеса. Пассив начисляется раз в неделю.",
-      cost:`Цена: ${rub(price)} • Энергия: -30 • Бизнес: +1`,
+      title:"🚀 Улучшить бизнес",
+      text:"Бизнес даёт пассивный доход каждую неделю.",
+      cost:`Цена: ${rub(price)} • Энергия: -30 • Бизнес +1`,
       btnText:"Улучшить",
       onClick: ()=>{
         if(!useAction(30)) return;
         if(S.money < price){
-          // вернуть ход честно
+          // вернуть честно
           S.actionsLeft += 1;
           S.energy = clamp(S.energy + 30, 0, 100);
           addLog(`Не хватает денег. Нужно ${rub(price)}.`, "bad");
-          saveState(); render();
+          toast("Не хватает денег на бизнес", "bad");
+          save(); render();
           return;
         }
         S.money -= price;
         S.biz += 1;
+        addXP(30);
         addLog(`Бизнес вырос до ${S.biz} ✅ (-${rub(price)})`, "good");
-        saveState(); render();
+        save(); render();
       }
     }));
+
     actions.push(actionCard({
-      title:"💰 Пожертвование (топ пожертвования)",
-      text:"Чисто игровая штука — пополняет 'Топ пожертвования'.",
-      cost:"Наличные: -500 ₽ • Пожертвования +500",
+      title:"💰 Пожертвование (топ)",
+      text:"Чисто игровая фишка — влияет на топ пожертвований.",
+      cost:"Ход: -1 • Наличные: -500 ₽ • Пожертвования: +500",
       btnText:"Пожертвовать",
       onClick: ()=>{
-        if(S.money < 500){ addLog("Не хватает 500 ₽","bad"); return; }
-        if(S.actionsLeft<=0){ addLog("Нет ходов.","bad"); return; }
+        if(S.actionsLeft<=0) return addLog("Нет ходов", "bad");
+        if(S.money < 500) return addLog("Не хватает 500 ₽", "bad");
         S.actionsLeft -= 1;
         S.money -= 500;
-        S.donations += 500;
-        addLog("Пожертвование 💰 +500 (в рейтинг).", "good");
-        saveState(); render();
+        S.tops.donations += 500;
+        addXP(10);
+        addLog("Пожертвование 💰 +500", "good");
+        save(); render();
       }
     }));
-    screenTemplate(
-      "🚀 Бизнес",
-      `Пассив в неделю сейчас: ${rub(passiveIncome())}. Уровень бизнеса: ${S.biz}.`,
-      "Фишка: бизнес уменьшает зависимость от работы.",
+
+    screenTemplate("🚀 Бизнес",
+      `Пассив в неделю: <b class="good">${rub(passiveIncome())}</b> • Уровень бизнеса: <b class="good">${S.biz}</b>`,
+      "Чем выше бизнес — тем меньше зависимость от работ",
       actions
     );
     return;
   }
 
-  if(currentTab === "bank"){
-    const actions = [];
-
+  if(currentTab==="bank"){
     actions.push(actionCard({
       title:"🏦 Депозит",
-      text:"Положить наличные в банк. Можно снять в любой день.",
-      cost:"Наличные → Банк",
+      text:"Положить/снять деньги из банка.",
+      cost:`Сейчас в банке: <b class="good">${rub(S.bank)}</b>`,
       btnText:"Открыть",
-      extraHTML: `
-        <div class="row2">
-          <input id="depAmt" type="number" placeholder="Сумма (например 1000)" />
-          <button class="b-ghost" id="depDo">Положить</button>
-          <button class="b-ghost" id="wdDo">Снять</button>
-        </div>
-        <div class="small" style="margin-top:8px">Снятие: Банк → Наличные</div>
-      `,
-      onClick: ()=>{}
+      onClick: ()=>{
+        openModal("Банк 🏦", "Выбери действие:", [
+          {text:"+1000 в банк", kind:"primary", onClick:()=>bankMove(+1000)},
+          {text:"+5000 в банк", kind:"primary", onClick:()=>bankMove(+5000)},
+          {text:"Снять 1000", kind:"ghost", onClick:()=>bankMove(-1000)},
+          {text:"Снять 5000", kind:"ghost", onClick:()=>bankMove(-5000)},
+        ]);
+      }
     }));
 
     actions.push(actionCard({
       title:"💳 Кредит",
-      text:"Берёшь деньги сразу, но каждый день капают проценты (игровые).",
-      cost:"Кредит → Долг (проценты/день)",
+      text:"Берёшь деньги сейчас, платишь проценты каждый день (игровое).",
+      cost:`Долг: <b class="warn">${rub(S.debt)}</b> • Проценты/день: <b class="warn">${rub(dailyDebtInterest())}</b>`,
       btnText:"Открыть",
-      extraHTML: `
-        <div class="row2">
-          <input id="loanAmt" type="number" placeholder="Взять (например 2000)" />
-          <button class="b-ghost" id="loanDo">Взять</button>
-        </div>
-        <div style="height:8px"></div>
-        <div class="row2">
-          <input id="payAmt" type="number" placeholder="Погасить (например 500)" />
-          <button class="b-ghost" id="payDo">Погасить</button>
-        </div>
-        <div class="small" style="margin-top:8px">Процент по долгу/день: ${rub(dailyDebtInterest())}</div>
-      `,
-      onClick: ()=>{}
+      onClick: ()=>{
+        openModal("Кредит 💳", "Выбери:", [
+          {text:"Взять 2000", kind:"primary", onClick:()=>loan(+2000)},
+          {text:"Взять 10000", kind:"primary", onClick:()=>loan(+10000)},
+          {text:"Погасить 500", kind:"ghost", onClick:()=>loan(-500)},
+          {text:"Погасить 2000", kind:"ghost", onClick:()=>loan(-2000)},
+        ]);
+      }
     }));
 
-    // bind bank
-    setTimeout(()=>{
-      const depDo = document.getElementById("depDo");
-      const wdDo  = document.getElementById("wdDo");
-      if(depDo){
-        depDo.onclick = ()=>{
-          const v = Number(document.getElementById("depAmt").value || 0);
-          if(v<=0) return addLog("Введи сумму > 0","bad");
-          if(v>S.money) return addLog("Не хватает наличных","bad");
-          S.money -= v; S.bank += v;
-          addLog(`Депозит 🏦 +${rub(v)}`, "good");
-          saveState(); render();
-        };
+    function bankMove(v){
+      if(v>0){
+        if(S.money < v) return toast("Не хватает наличных", "bad");
+        S.money -= v; S.bank += v;
+        addLog(`Банк: депозит +${rub(v)}`, "good");
+      } else {
+        const x = Math.abs(v);
+        if(S.bank < x) return toast("В банке не хватает", "bad");
+        S.bank -= x; S.money += x;
+        addLog(`Банк: снятие -${rub(x)}`, "good");
       }
-      if(wdDo){
-        wdDo.onclick = ()=>{
-          const v = Number(document.getElementById("depAmt").value || 0);
-          if(v<=0) return addLog("Введи сумму > 0","bad");
-          if(v>S.bank) return addLog("Не хватает в банке","bad");
-          S.bank -= v; S.money += v;
-          addLog(`Снятие 🏦 -${rub(v)} (в наличные)`, "good");
-          saveState(); render();
-        };
+      save(); render();
+    }
+    function loan(v){
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      if(v>0){
+        S.actionsLeft -= 1;
+        S.money += v;
+        // долг растет с комиссией
+        const add = Math.floor(v * (1.10 + Math.min(0.06, S.wanted*0.002)));
+        S.debt += add;
+        addLog(`Кредит: +${rub(v)} (долг +${rub(add)})`, "warn");
+        toast("Кредит взят", "warn");
+      } else {
+        const x = Math.abs(v);
+        if(S.money < x) return toast("Не хватает наличных", "bad");
+        if(S.debt <= 0) return toast("Долгов нет", "good");
+        S.actionsLeft -= 1;
+        S.money -= x;
+        S.debt = Math.max(0, S.debt - x);
+        addLog(`Погашение: -${rub(x)} (долг ${rub(S.debt)})`, "good");
       }
+      save(); render();
+    }
 
-      const loanDo = document.getElementById("loanDo");
-      const payDo = document.getElementById("payDo");
-      if(loanDo){
-        loanDo.onclick = ()=>{
-          const v = Number(document.getElementById("loanAmt").value || 0);
-          if(v<=0) return addLog("Введи сумму > 0","bad");
-          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-          S.actionsLeft -= 1;
-          S.money += v;
-          S.debt += Math.floor(v * 1.10); // 10% "комиссия" в долг
-          addLog(`Кредит 💳 +${rub(v)} (долг вырос).`, "warn");
-          saveState(); render();
-        };
-      }
-      if(payDo){
-        payDo.onclick = ()=>{
-          const v = Number(document.getElementById("payAmt").value || 0);
-          if(v<=0) return addLog("Введи сумму > 0","bad");
-          if(v>S.money) return addLog("Не хватает наличных","bad");
-          if(S.debt<=0) return addLog("Долгов нет ✅","good");
-          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-          S.actionsLeft -= 1;
-          S.money -= v;
-          S.debt = Math.max(0, S.debt - v);
-          addLog(`Погашение 💳 -${rub(v)}. Долг: ${rub(S.debt)}`, "good");
-          saveState(); render();
-        };
-      }
-    }, 0);
-
-    screenTemplate(
-      "🏦 Банк",
-      "Тут депозит, снятие и кредиты. Кредиты опасны из-за процентов каждый день.",
-      `Проценты по долгу сегодня: ${rub(dailyDebtInterest())}`,
+    screenTemplate("🏦 Банк",
+      "Депозиты и кредиты. Кредиты опасны — каждый день начисляются проценты.",
+      "Совет: не бери кредит ради крипты 😅",
       actions
     );
     return;
   }
 
-  if(currentTab === "shop"){
-    const actions = [];
+  if(currentTab==="shop"){
     actions.push(actionCard({
       title:"🍎 Еда",
-      text:"Нужна для восстановления энергии дома.",
+      text:"Нужна, чтобы восстанавливать энергию дома.",
       cost:"Цена: 150 ₽ • +1 еда",
       btnText:"Купить",
       onClick: ()=>{
-        if(S.money < 150) return addLog("Не хватает 150 ₽","bad");
         if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-        S.actionsLeft -= 1;
-        S.money -= 150;
-        S.inv.food += 1;
+        if(S.money<150) return addLog("Не хватает 150 ₽","bad");
+        S.actionsLeft -= 1; S.money -= 150; S.inv.food += 1;
         addLog("Купил еду 🍎 +1", "good");
-        saveState(); render();
+        save(); render();
       }
     }));
+
     actions.push(actionCard({
       title:"🖥 Техника",
-      text:"Техника слегка увеличивает эффективность (прибавка к доходу/пассиву).",
-      cost:"Цена: 2 500 ₽ • +1 техника • бонус к доходу",
+      text:"Даёт бонус к доходам/пассиву (до 30% суммарно).",
+      cost:"Цена: 2 500 ₽ • +1 техника",
       btnText:"Купить",
       onClick: ()=>{
-        if(S.money < 2500) return addLog("Не хватает 2 500 ₽","bad");
         if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-        S.actionsLeft -= 1;
-        S.money -= 2500;
-        S.inv.tech += 1;
+        if(S.money<2500) return addLog("Не хватает 2 500 ₽","bad");
+        S.actionsLeft -= 1; S.money -= 2500; S.inv.tech += 1;
         addLog("Купил технику 🖥 +1", "good");
-        saveState(); render();
+        save(); render();
       }
     }));
+
     actions.push(actionCard({
       title:"🛡 Экипировка (игровая)",
-      text:"Чисто для симулятора — открывает события/мини-ивенты позже.",
+      text:"Снижает риск в дуэлях/ограблениях (чуть-чуть).",
       cost:"Цена: 1 800 ₽ • +1 экипировка",
       btnText:"Купить",
       onClick: ()=>{
-        if(S.money < 1800) return addLog("Не хватает 1 800 ₽","bad");
         if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-        S.actionsLeft -= 1;
-        S.money -= 1800;
-        S.inv.gear += 1;
+        if(S.money<1800) return addLog("Не хватает 1 800 ₽","bad");
+        S.actionsLeft -= 1; S.money -= 1800; S.inv.gear += 1;
         addLog("Купил экипировку 🛡 +1", "good");
-        saveState(); render();
+        save(); render();
       }
     }));
 
-    screenTemplate(
-      "🏬 Магазин",
-      "Покупай еду/технику/экипировку. Еда — лучший способ держать энергию.",
-      "Совет: техника ускоряет рост капитала.",
-      actions
-    );
-    return;
-  }
-
-  if(currentTab === "cars"){
-    const actions = [];
     actions.push(actionCard({
-      title:"🚗 Машина (базовая)",
-      text:"Даёт бонус к заработку (меньше трат времени).",
-      cost:"Цена: 12 000 ₽ • +1 авто • бонус дохода",
+      title:"🚗 Машина",
+      text:"Даёт бонус к доходам (до 25% суммарно).",
+      cost:"Цена: 12 000 ₽ • +1 машина",
       btnText:"Купить",
       onClick: ()=>{
-        if(S.money < 12000) return addLog("Не хватает 12 000 ₽","bad");
         if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-        S.actionsLeft -= 1;
-        S.money -= 12000;
-        S.inv.car += 1;
+        if(S.money<12000) return addLog("Не хватает 12 000 ₽","bad");
+        S.actionsLeft -= 1; S.money -= 12000; S.inv.car += 1;
         addLog("Купил машину 🚗 +1", "good");
-        saveState(); render();
+        save(); render();
       }
     }));
-    screenTemplate(
-      "🚘 Автосалон",
-      "Авто повышает эффективность и капитал (в ранге тоже влияет).",
-      "Покупка авто — важная цель 🎯",
+
+    screenTemplate("🏬 Магазин",
+      "Покупки: еда, техника, экипировка, машина. Всё влияет на темп развития.",
+      "Совет: техника + бизнес = жирный пассив",
       actions
     );
     return;
   }
 
-  if(currentTab === "realty"){
-    const actions = [];
-    const nextLvl = Math.min(3, S.homeLevel + 1);
-    const price = [0, 8000, 17000, 40000][nextLvl] || 0;
+  if(currentTab==="realty"){
     const names = ["Аренда","Комната","Квартира","Дом"];
+    const nextLvl = Math.min(3, S.homeLevel+1);
+    const price = [0, 8000, 17000, 40000][nextLvl] || 0;
+
     actions.push(actionCard({
       title:"🏠 Улучшить жильё",
       text:`Сейчас: ${names[S.homeLevel]}. Следующее: ${names[nextLvl]}.`,
-      cost:`Цена: ${rub(price)} • Энергия: -25 • Жильё: +1`,
+      cost:`Цена: ${rub(price)} • Энергия: -25`,
       btnText:"Улучшить",
+      disabled: nextLvl===S.homeLevel,
       onClick: ()=>{
-        if(nextLvl === S.homeLevel) return addLog("Максимальный уровень жилья ✅","good");
         if(!useAction(25)) return;
-        if(S.money < price){
-          // вернуть ход честно
-          S.actionsLeft += 1;
-          S.energy = clamp(S.energy + 25, 0, 100);
+        if(S.money<price){
+          S.actionsLeft += 1; S.energy = clamp(S.energy+25,0,100);
           addLog(`Не хватает денег. Нужно ${rub(price)}.`, "bad");
-          saveState(); render();
-          return;
+          return save(), render();
         }
         S.money -= price;
         S.homeLevel = nextLvl;
+        S.rentDueIn = Math.min(14, S.rentDueIn+3);
+        addXP(35);
         addLog(`Жильё улучшено: ${names[S.homeLevel]} 🏠`, "good");
-        saveState(); render();
+        save(); render();
       }
     }));
+
     actions.push(actionCard({
-      title:"🧾 Оплатить аренду/обслуживание заранее",
-      text:"Если не оплатить вовремя — штраф и стресс.",
-      cost:"Цена: 700 ₽ • Сдвиг оплаты +7 дней",
+      title:"🧾 Оплатить жильё заранее",
+      text:"Если просрочишь — штраф и стресс.",
+      cost:`Цена: 700 ₽ • До оплаты: ${S.rentDueIn} дн → +7 дн`,
       btnText:"Оплатить",
       onClick: ()=>{
-        if(S.money < 700) return addLog("Не хватает 700 ₽","bad");
         if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-        S.actionsLeft -= 1;
-        S.money -= 700;
-        S.rentDueIn = Math.min(14, S.rentDueIn + 7);
-        addLog("Оплатил жильё 🧾 (плюс дней до оплаты).", "good");
-        saveState(); render();
+        if(S.money<700) return addLog("Не хватает 700 ₽","bad");
+        S.actionsLeft -= 1; S.money -= 700;
+        S.rentDueIn = Math.min(21, S.rentDueIn + 7);
+        addLog("Жильё оплачено 🧾", "good");
+        save(); render();
       }
     }));
-    screenTemplate(
-      "🏢 Недвижимость",
-      "Жильё влияет на расходы в неделю, но повышает капитал и комфорт.",
-      "Баланс: улучшай жильё, но следи за расходами.",
+
+    screenTemplate("🏢 Жильё",
+      "Жильё повышает капитал и комфорт, но увеличивает расходы в неделю.",
+      `До оплаты: ${S.rentDueIn} дней`,
       actions
     );
     return;
   }
 
-  if(currentTab === "crypto"){
-    const actions = [];
-    const price = S.cryptoPrice;
-    const ownedVal = Math.floor(S.cryptoCash * price);
+  if(currentTab==="crypto"){
+    const p = S.crypto.price;
+    const val = Math.floor(S.crypto.coins * p);
     actions.push(actionCard({
       title:"🖥💶 Рынок крипты",
-      text:`Цена сейчас: ${rub(price)} за 1 монету. У тебя: ${S.cryptoCash} монет (≈ ${rub(ownedVal)}).`,
-      cost:"Покупка/продажа за наличные",
-      btnText:"Ок",
-      extraHTML: `
-        <div class="row2">
-          <input id="cAmt" type="number" placeholder="Количество (например 3)" />
-          <button class="b-ghost" id="cBuy">Купить</button>
-          <button class="b-ghost" id="cSell">Продать</button>
-        </div>
-      `,
-      onClick: ()=>{}
+      text:`Цена: <b class="good">${rub(p)}</b> за монету. У тебя: <b class="good">${S.crypto.coins}</b> (≈ ${rub(val)}).`,
+      cost:"Покупка/продажа тратит 1 ход",
+      btnText:"Открыть",
+      onClick: ()=>{
+        openModal("Крипта 🖥💶", `Цена сейчас: ${rub(p)}. Сколько купить/продать?`, [
+          {text:"Купить 1", kind:"primary", onClick:()=>cryptoBuy(1)},
+          {text:"Купить 5", kind:"primary", onClick:()=>cryptoBuy(5)},
+          {text:"Продать 1", kind:"ghost", onClick:()=>cryptoSell(1)},
+          {text:"Продать 5", kind:"ghost", onClick:()=>cryptoSell(5)},
+        ]);
+      }
     }));
 
-    setTimeout(()=>{
-      const buy = document.getElementById("cBuy");
-      const sell = document.getElementById("cSell");
-      if(buy){
-        buy.onclick = ()=>{
-          const q = Number(document.getElementById("cAmt").value||0);
-          if(q<=0) return addLog("Введи кол-во > 0","bad");
-          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-          const cost = q * S.cryptoPrice;
-          if(cost > S.money) return addLog("Не хватает наличных","bad");
-          S.actionsLeft -= 1;
-          S.money -= cost;
-          S.cryptoCash += q;
-          addLog(`Купил крипту 🖥💶 +${q} (-${rub(cost)})`, "good");
-          saveState(); render();
-        };
-      }
-      if(sell){
-        sell.onclick = ()=>{
-          const q = Number(document.getElementById("cAmt").value||0);
-          if(q<=0) return addLog("Введи кол-во > 0","bad");
-          if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
-          if(q > S.cryptoCash) return addLog("У тебя нет столько монет","bad");
-          const gain = q * S.cryptoPrice;
-          S.actionsLeft -= 1;
-          S.cryptoCash -= q;
-          S.money += gain;
-          addLog(`Продал крипту 🖥💶 -${q} (+${rub(gain)})`, "good");
-          saveState(); render();
-        };
-      }
-    }, 0);
+    function cryptoBuy(q){
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      const cost = q*S.crypto.price;
+      if(S.money<cost) return toast("Не хватает наличных", "bad");
+      S.actionsLeft -= 1;
+      S.money -= cost;
+      S.crypto.coins += q;
+      addXP(10);
+      addLog(`Крипта: купил +${q} (-${rub(cost)})`, "good");
+      save(); render();
+    }
+    function cryptoSell(q){
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      if(S.crypto.coins<q) return toast("Монет не хватает", "bad");
+      const gain = q*S.crypto.price;
+      S.actionsLeft -= 1;
+      S.crypto.coins -= q;
+      S.money += gain;
+      addXP(10);
+      addLog(`Крипта: продал -${q} (+${rub(gain)})`, "good");
+      save(); render();
+    }
 
-    screenTemplate(
-      "🖥💶 Крипта",
-      "Цена меняется каждый день. Можно как поднять, так и слиться 😅",
-      "Совет: не влезай в долг ради крипты.",
+    screenTemplate("🖥💶 Крипта",
+      "Цена меняется каждый день. Можно поднять или улететь в ноль 😅",
+      "Совет: избегай кредита ради крипты",
       actions
     );
     return;
   }
 
-  if(currentTab === "tops"){
-    const actions = [];
+  if(currentTab==="arena"){
+    // дуэль: шанс зависит от уровня, навыка и экипировки
+    const gearB = Math.min(0.20, S.inv.gear*0.04);
+    const baseWin = clamp(0.45 + (S.lvl*0.01) + (S.skill*0.015) + gearB - (S.wanted*0.01), 0.08, 0.92);
+    const prize = 350 + S.lvl*45;
 
-    const cryptoValue = Math.floor(S.cryptoCash * S.cryptoPrice);
+    actions.push(actionCard({
+      title:"🤺 Дуэль (против бота)",
+      text:"Шанс победы зависит от уровня/навыка/экипировки. Проигрыш — потеря денег.",
+      cost:`Энергия: -25 • Ход: -1 • Шанс победы: ${Math.round(baseWin*100)}% • Награда: +${rub(prize)} / Штраф: -${rub(Math.floor(prize*0.75))}`,
+      btnText:"Драться",
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(!useAction(25)) return;
+        const win = Math.random() < baseWin;
+        if(win){
+          S.money += prize;
+          S.stats.duelsWin += 1;
+          addXP(55);
+          addLog(`Дуэль выиграна 🤺 +${rub(prize)} • XP +55`, "good");
+          toast("Победа!", "good");
+        } else {
+          const loss = Math.floor(prize*0.75);
+          S.money = Math.max(0, S.money - loss);
+          S.stats.duelsLose += 1;
+          addXP(15);
+          addLog(`Дуэль проиграна 🤕 -${rub(loss)} • XP +15`, "bad");
+          toast("Проигрыш 😅", "bad");
+        }
+        save(); render();
+      }
+    }));
+
+    screenTemplate("🤺 Дуэль",
+      "Это игровая дуэль (только шанс/награда/штраф).",
+      `Экипировка бонус: +${Math.round(gearB*100)}%`,
+      actions
+    );
+    return;
+  }
+
+  if(currentTab==="heist"){
+    // ограбление — чисто игровая механика риска
+    const gearB = Math.min(0.22, S.inv.gear*0.045);
+    const base = clamp(0.25 + (S.skill*0.02) + (S.lvl*0.012) + gearB - (S.wanted*0.02), 0.03, 0.80);
+    const loot = 900 + S.lvl*110 + S.skill*45;
+    const fine = 1000 + S.wanted*220;
+
+    actions.push(actionCard({
+      title:"🪓 Ограбление (очень риск)",
+      text:"Высокий риск. При провале растёт розыск и штраф. Это внутриигровой ивент.",
+      cost:`Энергия: -40 • Ход: -1 • Шанс успеха: ${Math.round(base*100)}% • Лут: +${rub(Math.floor(loot))} • Провал: -${rub(fine)} и розыск +2`,
+      btnText:"Рискнуть",
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(!useAction(40)) return;
+        const ok = Math.random() < base;
+        if(ok){
+          const gain = Math.floor(loot);
+          S.money += gain;
+          S.stats.heistsWin += 1;
+          addXP(85);
+          S.wanted += 1;
+          addLog(`Успех 🪓 +${rub(gain)} • розыск +1 • XP +85`, "good");
+          toast("Успех!", "good");
+        } else {
+          S.money = Math.max(0, S.money - fine);
+          S.stats.heistsLose += 1;
+          addXP(20);
+          S.wanted += 2;
+          addLog(`Провал 🪓 -${rub(fine)} • розыск +2 • XP +20`, "bad");
+          toast("Провал 😵", "bad");
+        }
+        save(); render();
+      }
+    }));
+
+    actions.push(actionCard({
+      title:"🧼 Сбросить розыск (откуп)",
+      text:"Плати, чтобы снизить розыск (игровое).",
+      cost:`Цена: ${rub(600 + S.wanted*250)} • Розыск -1`,
+      btnText:"Снизить",
+      disabled: S.wanted<=0,
+      onClick: ()=>{
+        const price = 600 + S.wanted*250;
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(S.money < price) return addLog("Не хватает денег","bad");
+        S.actionsLeft -= 1;
+        S.money -= price;
+        S.wanted = Math.max(0, S.wanted - 1);
+        addLog(`Розыск снижен 🧼 (-${rub(price)})`, "good");
+        save(); render();
+      }
+    }));
+
+    screenTemplate("🪓 Ограбление",
+      "Высокий риск. Делай на свой страх и риск — чисто в игре.",
+      `Розыск: ${S.wanted}`,
+      actions
+    );
+    return;
+  }
+
+  if(currentTab==="family"){
+    actions.push(actionCard({
+      title:"👩‍❤️‍👨 Найти партнёра",
+      text:"Партнёр увеличивает расходы, но даёт бонус мотивации (XP).",
+      cost:"Ход: -1 • Энергия: -15 • Партнёр: да",
+      btnText: S.family.partner ? "Уже есть" : "Искать",
+      disabled: S.family.partner,
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(!useAction(15)) return;
+        S.family.partner = true;
+        addXP(40);
+        addLog("Ты нашёл партнёра 👩‍❤️‍👨", "good");
+        toast("Партнёр найден!", "good");
+        save(); render();
+      }
+    }));
+
+    actions.push(actionCard({
+      title:"👫 ЗАГС (свадьба)",
+      text:"Свадьба повышает расходы, но повышает стабильность (малый бонус пассива).",
+      cost:"Цена: 3000 ₽ • Ход: -1 • Статус: женат/замужем",
+      btnText: S.family.married ? "Уже в браке" : "Жениться",
+      disabled: !S.family.partner || S.family.married,
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(S.money<3000) return addLog("Не хватает 3000 ₽","bad");
+        S.actionsLeft -= 1;
+        S.money -= 3000;
+        S.family.married = true;
+        addXP(60);
+        addLog("Свадьба в ЗАГС 👑", "good");
+        toast("Брак зарегистрирован!", "good");
+        save(); render();
+      }
+    }));
+
+    actions.push(actionCard({
+      title:"👶 Ребёнок",
+      text:"Дорого по расходам, но это жизнь 😅",
+      cost:"Ход: -1 • Цена: 1500 ₽ • Дети +1",
+      btnText:"Добавить",
+      disabled: !S.family.married,
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(S.money<1500) return addLog("Не хватает 1500 ₽","bad");
+        S.actionsLeft -= 1;
+        S.money -= 1500;
+        S.family.kids += 1;
+        addXP(35);
+        addLog(`Семья выросла 👶 Дети: ${S.family.kids}`, "good");
+        save(); render();
+      }
+    }));
+
+    screenTemplate("👩‍❤️‍👨 Семья / ЗАГС",
+      `Партнёр: <b>${S.family.partner ? "есть" : "нет"}</b> • Брак: <b>${S.family.married ? "да" : "нет"}</b> • Дети: <b>${S.family.kids}</b>`,
+      "Семья увеличивает расходы в неделю",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab==="clan"){
+    actions.push(actionCard({
+      title:"🛡 Клан",
+      text:"Клан — локально (в браузере). Можно сделать серверную версию позже.",
+      cost:`Клан: <b class="good">${S.clan.name || "нет"}</b> • Уровень: ${S.clan.level} • Склад: ${rub(S.clan.storage)}`,
+      btnText:"Управление",
+      onClick: ()=>{
+        if(!S.clan.name){
+          openModal("Создать клан 🛡", "Выбери:", [
+            {text:"Создать за 2000", kind:"primary", onClick:()=>createClan()},
+            {text:"Отмена", kind:"ghost", onClick:()=>{}},
+          ]);
+        } else {
+          openModal("Клан 🛡", "Выбери действие:", [
+            {text:"+1000 в склад", kind:"primary", onClick:()=>clanStore(+1000)},
+            {text:"+5000 в склад", kind:"primary", onClick:()=>clanStore(+5000)},
+            {text:"Снять 1000", kind:"ghost", onClick:()=>clanStore(-1000)},
+            {text:"Апгрейд клана", kind:"primary", onClick:()=>clanUp()},
+          ]);
+        }
+      }
+    }));
+
+    actions.push(actionCard({
+      title:"⚔️ Битва кланов (ивент)",
+      text:"Шанс зависит от уровня клана и твоего уровня.",
+      cost:"Энергия: -30 • Ход: -1 • Победа: +склад • Поражение: -склад",
+      btnText:"Сражаться",
+      disabled: !S.clan.name,
+      onClick: ()=>{
+        if(S.actionsLeft<=0) return addLog("Нет ходов","bad");
+        if(!useAction(30)) return;
+        const chance = clamp(0.45 + (S.clan.level*0.04) + (S.lvl*0.01), 0.10, 0.90);
+        const stake = 700 + S.clan.level*250;
+        const win = Math.random() < chance;
+        if(win){
+          S.clan.storage += stake;
+          addXP(70);
+          addLog(`Клан победил ⚔️ +${rub(stake)} в склад`, "good");
+          toast("Победа клана!", "good");
+        } else {
+          S.clan.storage = Math.max(0, S.clan.storage - stake);
+          addXP(20);
+          addLog(`Клан проиграл ⚔️ -${rub(stake)} со склада`, "bad");
+          toast("Проигрыш клана", "bad");
+        }
+        save(); render();
+      }
+    }));
+
+    function createClan(){
+      if(S.money < 2000) return toast("Не хватает 2000", "bad");
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      S.actionsLeft -= 1;
+      S.money -= 2000;
+      S.clan.name = "FiveClan";
+      S.clan.level = 1;
+      S.clan.storage = 0;
+      addXP(40);
+      addLog("Клан создан 🛡 FiveClan", "good");
+      toast("Клан создан!", "good");
+      save(); render();
+    }
+    function clanStore(v){
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      if(v>0){
+        if(S.money < v) return toast("Не хватает наличных", "bad");
+        S.actionsLeft -= 1;
+        S.money -= v;
+        S.clan.storage += v;
+        addLog(`Склад клана 🛠 +${rub(v)}`, "good");
+      } else {
+        const x = Math.abs(v);
+        if(S.clan.storage < x) return toast("В складе не хватает", "bad");
+        S.actionsLeft -= 1;
+        S.clan.storage -= x;
+        S.money += x;
+        addLog(`Склад клана 🛠 -${rub(x)} (снятие)`, "good");
+      }
+      save(); render();
+    }
+    function clanUp(){
+      const price = 2500 + S.clan.level*1800;
+      if(S.money < price) return toast("Не хватает денег", "bad");
+      if(S.actionsLeft<=0) return toast("Нет ходов", "bad");
+      S.actionsLeft -= 1;
+      S.money -= price;
+      S.clan.level += 1;
+      addXP(60);
+      addLog(`Клан апнут до уровня ${S.clan.level} 🛡 (-${rub(price)})`, "good");
+      save(); render();
+    }
+
+    screenTemplate("🛡 Клан",
+      "Кланы, битвы, склад. Пока локально (в браузере), но можно сделать онлайново позже.",
+      "Совет: вложи деньги в клановый склад",
+      actions
+    );
+    return;
+  }
+
+  if(currentTab==="tops"){
     // обновим рекорды
-    S.tops.bestNetWorth = Math.max(S.tops.bestNetWorth, netWorth());
-    S.tops.bestDonations = Math.max(S.tops.bestDonations, S.donations);
-    S.tops.bestCryptoValue = Math.max(S.tops.bestCryptoValue, cryptoValue);
+    const cryptoVal = Math.floor(S.crypto.coins * S.crypto.price);
+    S.tops.bestNW = Math.max(S.tops.bestNW, netWorth());
+    S.tops.bestCrypto = Math.max(S.tops.bestCrypto, cryptoVal);
 
     actions.push(actionCard({
       title:"Forbes 😎💵",
-      text:"Локальные топы (в твоём браузере). Это как рекорды аккаунта.",
+      text:"Пока топы локальные (в этом браузере). Для глобальных нужен сервер.",
       cost:"—",
-      btnText:"Показать",
+      btnText:"Ок",
       onClick: ()=>{},
       extraHTML: `
-        <ul class="list" style="margin-top:10px">
-          <li><div><b>Топ баланс 💳</b><div class="small">Рекорд капитала</div></div><span class="badge">${rub(S.tops.bestNetWorth)}</span></li>
-          <li><div><b>Топ пожертвования 💰</b><div class="small">Сколько пожертвовал всего</div></div><span class="badge">${rub(S.tops.bestDonations)}</span></li>
-          <li><div><b>Топ крипта 🖥💶</b><div class="small">Лучшее значение крипты</div></div><span class="badge">${rub(S.tops.bestCryptoValue)}</span></li>
+        <ul class="list" style="margin:10px 0 0">
+          <li><div><b>Топ баланс 💳</b><div class="small">Рекорд капитала</div></div><span class="badge">${rub(S.tops.bestNW)}</span></li>
+          <li><div><b>Топ пожертвования 💰</b><div class="small">Пожертвовано</div></div><span class="badge">${rub(S.tops.donations)}</span></li>
+          <li><div><b>Топ крипта 🖥💶</b><div class="small">Лучшее значение крипты</div></div><span class="badge">${rub(S.tops.bestCrypto)}</span></li>
         </ul>
       `
     }));
 
-    screenTemplate(
-      "Forbes 😎💵",
-      "Тут рекорды: капитал, пожертвования, крипта. Можно сделать глобально позже (через сервер).",
-      "Пока это локальные рекорды — зато бесплатно ✅",
+    screenTemplate("Forbes 😎💵",
+      "Топы и рекорды. Сервера нет → всё бесплатно и локально ✅",
+      "Если хочешь общий онлайн-топ — скажи, сделаем на бесплатном хостинге API",
       actions
     );
-    saveState();
+    save();
     return;
   }
-
-  // fallback
-  screenTemplate("—", "—", "—", []);
 }
 
-/* ---------- achievements UI ---------- */
+/* ---------- Next day tick ---------- */
+function nextDay(){
+  // проценты по долгу
+  const di = dailyDebtInterest();
+  if(di>0){
+    S.debt += di;
+    addLog(`Проценты по долгу: +${rub(di)} (долг ${rub(S.debt)})`, "warn");
+  }
+
+  // крипта
+  const prev = S.crypto.price;
+  nextCryptoPrice();
+  if(S.crypto.price>prev) addLog(`Крипта 📈 ${rub(prev)} → ${rub(S.crypto.price)}`, "good");
+  else if(S.crypto.price<prev) addLog(`Крипта 📉 ${rub(prev)} → ${rub(S.crypto.price)}`, "bad");
+
+  // жильё (счётчик оплаты)
+  S.rentDueIn -= 1;
+
+  // новый день
+  S.day += 1;
+  S.actionsLeft = 3;
+  S.energy = clamp(S.energy + 25, 0, 100);
+  addLog(`Новый день: ${S.day}. Энергия восстановилась.`, "info");
+
+  // просрочка жилья
+  if(S.rentDueIn <= 0){
+    const fine = 900 + S.homeLevel*260 + (S.family.kids*120);
+    S.money = Math.max(0, S.money - fine);
+    S.rentDueIn = 7;
+    addLog(`Просрочка жилья 🧾 Штраф -${rub(fine)}.`, "bad");
+    toast("Штраф за жильё!", "bad");
+  }
+
+  // розыск со временем немного падает
+  if(S.wanted>0 && Math.random()<0.55){
+    S.wanted = Math.max(0, S.wanted-1);
+    addLog("Розыск снизился со временем 🧼 (-1)", "info");
+  }
+
+  // конец недели
+  if((S.day-1) % 7 === 0){
+    const cost = weeklyCosts();
+    const pass = passiveIncome();
+    S.money = Math.max(0, S.money - cost + pass);
+    addLog(`Конец недели: расходы -${rub(cost)}.`, "bad");
+    if(pass>0) addLog(`Пассив: +${rub(pass)} ✅`, "good");
+
+    // бонус XP за стабильность
+    addXP(25);
+  }
+
+  // обновить рекорды
+  S.tops.bestNW = Math.max(S.tops.bestNW, netWorth());
+  S.tops.bestCrypto = Math.max(S.tops.bestCrypto, Math.floor(S.crypto.coins * S.crypto.price));
+
+  save(); render();
+}
+
+/* ---------- UI render (kpis / inv / achievements / log / screen) ---------- */
+function renderInventory(){
+  const ul = $("inventoryList");
+  ul.innerHTML="";
+  const rows = [
+    ["Еда 🍎", S.inv.food],
+    ["Техника 🖥", S.inv.tech],
+    ["Экипировка 🛡", S.inv.gear],
+    ["Машина 🚗", S.inv.car],
+  ];
+  rows.forEach(([name,val])=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<div><b>${name}</b><div class="small">кол-во</div></div><span class="badge">${val}</span>`;
+    ul.appendChild(li);
+  });
+  $("invBadge").textContent = `Копилка: ${rub(S.safe)} • Крипта: ${S.crypto.coins}🪙`;
+}
+
 function renderAchievements(){
   const ul = $("achievements");
-  ul.innerHTML = "";
-  let done = 0;
-
+  ul.innerHTML="";
+  let done=0;
   ACH.forEach(a=>{
-    const ok = a.ok();
+    const ok = a.ok(S);
     if(ok) done++;
     const li = document.createElement("li");
     li.innerHTML = `
-      <div>
-        <b>${a.name} ${ok ? '<span class="good">✓</span>' : ''}</b>
+      <div style="min-width:0">
+        <b>${a.name} ${ok?'<span class="good">✓</span>':''}</b>
         <div class="small">${a.desc}</div>
       </div>
-      <span class="badge">${ok ? "Открыто" : "Закрыто"}</span>
+      <span class="badge">${ok?"Открыто":"Закрыто"}</span>
     `;
     ul.appendChild(li);
   });
-
   $("achvBadge").textContent = `${done}/${ACH.length}`;
 }
 
-/* ---------- inventory UI ---------- */
-function renderInventory(){
-  const ul = $("inventoryList");
-  ul.innerHTML = "";
-  const items = [
-    {k:"food", name:"Еда 🍎", v:S.inv.food},
-    {k:"tech", name:"Техника 🖥", v:S.inv.tech},
-    {k:"car",  name:"Машина 🚗", v:S.inv.car},
-    {k:"gear", name:"Экипировка 🛡", v:S.inv.gear},
-  ];
-  items.forEach(x=>{
-    const li = document.createElement("li");
-    li.innerHTML = `<div><b>${x.name}</b><div class="small">Кол-во</div></div><span class="badge">${x.v}</span>`;
-    ul.appendChild(li);
-  });
-  $("invBadge").textContent = `Копилка: ${rub(S.safe)} • Крипта: ${S.cryptoCash} 🪙`;
-}
-
-/* ---------- main render ---------- */
 function render(){
-  ensureNonNegative();
-
-  // bonuses from items (простые, чтобы игралась)
-  // техника даёт +3% к доходам/пассиву за штуку (кап 30%)
-  const techBonus = Math.min(0.30, S.inv.tech * 0.03);
-  // авто даёт +5% к доходу (кап 25%)
-  const carBonus = Math.min(0.25, S.inv.car * 0.05);
-
-  // отображаем подсказку экономики недели
-  const wkCost = weeklyCosts();
-  const pass = passiveIncome();
-  $("weekEconomy").textContent = `Расход/нед: ${rub(wkCost)} • Пассив/нед: ${rub(pass)}`;
-
-  // применим бонусы к экранам работы/пассиву (просто в реальном начислении будем учитывать в nextDay и work)
-  // В этом файле бонусы учтём так:
-  // - бонус от техники/авто добавляется сразу к наличным при работе через множитель
-  // Для этого: перезапишем обработчики работы при рендере? Не надо. Сделаем в nextDay и в action handlers:
-  // (упростим) — бонусы учитываются в endOfDay начислениях, а работа уже норм.
-  // Чтобы не усложнять: бонусы учтём в конце дня как "эффективность".
-  // (Да, это чуть условно, зато просто.)
+  // KPI
+  $("dayPill").textContent = `День ${S.day}`;
+  $("weekPill").textContent = String(week());
+  $("rankPill").textContent = rankName();
+  $("actionsLeft").textContent = `Ходы: ${S.actionsLeft}/3`;
 
   $("money").textContent = rub(S.money);
   $("bank").textContent = rub(S.bank);
   $("debt").textContent = rub(S.debt);
   $("energy").textContent = String(S.energy);
-  $("skill").textContent = String(S.skill);
-  $("biz").textContent = String(S.biz);
 
-  $("dayPill").textContent = `День ${S.day}`;
-  $("weekPill").textContent = `Неделя ${week()}`;
-  $("rankPill").textContent = `Ранг: ${rankName()}`;
-  $("actionsLeft").textContent = `Ходов: ${S.actionsLeft}/3`;
+  $("lvl").textContent = String(S.lvl);
+  $("skill").textContent = String(S.skill);
+
   $("netWorth").textContent = `Капитал: ${rub(netWorth())}`;
 
-  const ePct = Math.round((S.energy/100)*100);
-  $("energyBar").style.width = ePct + "%";
-
-  // home small label
-  const homeName = ["Аренда","Комната","Квартира","Дом"][S.homeLevel] || "Аренда";
+  const homeName = ["аренда","комната","квартира","дом"][S.homeLevel] || "аренда";
   $("homeSmall").textContent = homeName;
+
+  // bars
+  $("energyBar").style.width = `${Math.round((S.energy/100)*100)}%`;
+  $("xpBar").style.width = `${Math.round((S.xp / S.xpNeed)*100)}%`;
+  $("xpText").textContent = `${S.xp}/${S.xpNeed}`;
+
+  // economy hint
+  $("economyHint").textContent = `Расход/нед: ${rub(weeklyCosts())} • Пассив/нед: ${rub(passiveIncome())} • %/день: ${rub(dailyDebtInterest())}`;
 
   // log
   const ul = $("log");
-  ul.innerHTML = "";
+  ul.innerHTML="";
   S.log.forEach(x=>{
     const li = document.createElement("li");
     li.innerHTML = x.type==="good" ? `✅ <span class="good">${escapeHtml(x.t)}</span>`
-              : x.type==="bad"  ? `⚠️ <span class="bad">${escapeHtml(x.t)}</span>`
-              : x.type==="warn" ? `💳 <span class="warn">${escapeHtml(x.t)}</span>`
-              : `• ${escapeHtml(x.t)}`;
+      : x.type==="bad" ? `⚠️ <span class="bad">${escapeHtml(x.t)}</span>`
+      : x.type==="warn"? `💳 <span class="warn">${escapeHtml(x.t)}</span>`
+      : `• ${escapeHtml(x.t)}`;
     ul.appendChild(li);
   });
 
@@ -1146,89 +1796,37 @@ function render(){
 
 function escapeHtml(s){
   return String(s||"")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;")
-    .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
     .replaceAll("'","&#039;");
 }
 
-/* ---------- next day (core tick) ---------- */
-function nextDay(){
-  // конец дня: проценты по долгу
-  const int = dailyDebtInterest();
-  if(int>0){
-    S.debt += int;
-    addLog(`Проценты по долгу: +${rub(int)} (итого долг ${rub(S.debt)})`, "warn");
-  }
-
-  // цена крипты меняется каждый день
-  const prev = S.cryptoPrice;
-  nextCryptoPrice();
-  if(S.cryptoPrice > prev) addLog(`Крипта выросла 📈 ${rub(prev)} → ${rub(S.cryptoPrice)}`, "good");
-  if(S.cryptoPrice < prev) addLog(`Крипта упала 📉 ${rub(prev)} → ${rub(S.cryptoPrice)}`, "bad");
-
-  // движение аренды
-  S.rentDueIn -= 1;
-
-  // ночь: восстановление
-  S.day += 1;
-  S.actionsLeft = 3;
-  S.energy = clamp(S.energy + 25, 0, 100);
-
-  addLog(`Новый день: ${S.day}. Энергия восстановилась.`, "info");
-
-  // если просрочил жильё
-  if(S.rentDueIn <= 0){
-    const fine = 900 + S.homeLevel*250;
-    S.money = Math.max(0, S.money - fine);
-    S.rentDueIn = 7;
-    addLog(`Просрочка жилья 🧾 Штраф -${rub(fine)}.`, "bad");
-  }
-
-  // каждую неделю: расходы + пассив
-  if((S.day-1) % 7 === 0){
-    const cost = weeklyCosts();
-    const pass = passiveIncome();
-
-    // бонусы (просто и приятно)
-    const techBonus = Math.min(0.30, S.inv.tech * 0.03);
-    const carBonus  = Math.min(0.25, S.inv.car * 0.05);
-    const eff = 1 + techBonus + carBonus;
-    const passEff = Math.floor(pass * eff);
-
-    S.money = Math.max(0, S.money - cost + passEff);
-
-    addLog(`Конец недели: расходы -${rub(cost)}.`, cost ? "bad":"info");
-    if(passEff>0) addLog(`Пассив бизнеса: +${rub(passEff)} ✅`, "good");
-
-    // обновим локальные рекорды
-    const cryptoValue = Math.floor(S.cryptoCash * S.cryptoPrice);
-    S.tops.bestNetWorth = Math.max(S.tops.bestNetWorth, netWorth());
-    S.tops.bestDonations = Math.max(S.tops.bestDonations, S.donations);
-    S.tops.bestCryptoValue = Math.max(S.tops.bestCryptoValue, cryptoValue);
-  }
-
-  saveState();
-  render();
-}
-
-/* ---------- tab binds ---------- */
-$("tabs").addEventListener("click", (e)=>{
-  const btn = e.target.closest("[data-tab]");
-  if(!btn) return;
-  setTab(btn.getAttribute("data-tab"));
+/* ---------- Events ---------- */
+$("tabs").addEventListener("click",(e)=>{
+  const b = e.target.closest("[data-tab]");
+  if(!b) return;
+  setTab(b.getAttribute("data-tab"));
 });
 
-/* ---------- global buttons ---------- */
 $("nextDayBtn").onclick = nextDay;
+$("saveBtn").onclick = ()=>{ save(); toast("Сохранено 💾","good"); };
 $("resetBtn").onclick = ()=>{
-  if(!confirm("Сбросить прогресс?")) return;
-  localStorage.removeItem(KEY);
-  S = defaultState();
-  saveState();
-  render();
+  openModal("Сброс прогресса ♻️","Точно сбросить всё? Это нельзя отменить.",[
+    {text:"Сбросить", kind:"danger", onClick:()=>{
+      localStorage.removeItem(KEY);
+      S = defaultState();
+      save();
+      toast("Сброшено","warn");
+      render();
+      setTab("home");
+    }},
+    {text:"Отмена", kind:"ghost", onClick:()=>{}}
+  ]);
 };
 
-/* ---------- init ---------- */
+/* ---------- Init ---------- */
 render();
 </script>
 </body>
