@@ -1,93 +1,651 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>FiveAir1337Life-Time</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    background:#0b0f14;
-    color:#e6e6e6;
-}
-header{
-    padding:40px 20px;
-    text-align:center;
-}
-h1{
-    font-size:2.5em;
-    margin-bottom:10px;
-}
-p{
-    max-width:600px;
-    margin:0 auto 30px;
-    line-height:1.6;
-}
-.buttons{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    flex-wrap:wrap;
-}
-.buttons a{
-    text-decoration:none;
-    padding:15px 25px;
-    border:1px solid #2d7cff;
-    color:#2d7cff;
-    border-radius:5px;
-    transition:0.3s;
-}
-.buttons a:hover{
-    background:#2d7cff;
-    color:#000;
-}
-footer{
-    margin-top:60px;
-    padding:20px;
-    text-align:center;
-    font-size:0.9em;
-    color:#777;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FiveAir1337Life-Time</title>
+  <meta name="description" content="Реальная жизнь без воды: работа, деньги, навыки и бизнес." />
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#101823;
+      --panel2:#0f1620;
+      --text:#e7eef7;
+      --muted:#9db0c7;
+      --line:#223042;
+      --accent:#2d7cff;
+      --accent2:#7aa9ff;
+      --good:#43d17a;
+      --bad:#ff5c5c;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:radial-gradient(1200px 600px at 15% 0%, rgba(45,124,255,.20), transparent 60%),
+                 radial-gradient(900px 500px at 90% 20%, rgba(122,169,255,.12), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,20,.70);
+      border-bottom:1px solid rgba(34,48,66,.65);
+    }
+    .topbar-inner{
+      max-width:1100px;margin:0 auto;padding:14px 18px;
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+    }
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{
+      width:36px;height:36px;border-radius:12px;
+      background:linear-gradient(135deg, rgba(45,124,255,.95), rgba(122,169,255,.55));
+      box-shadow: var(--shadow);
+      display:grid;place-items:center;
+      font-weight:900;letter-spacing:.5px;color:#06101d;
+    }
+    .brand h1{font-size:16px;margin:0}
+    .brand span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+
+    nav{display:flex;gap:10px;flex-wrap:wrap}
+    .navbtn{
+      padding:10px 12px;border:1px solid rgba(34,48,66,.9);
+      background:rgba(16,24,35,.55);
+      border-radius:12px;
+      font-size:13px;color:var(--muted);
+      transition:.2s;
+    }
+    .navbtn:hover{border-color:rgba(45,124,255,.9);color:var(--text);transform:translateY(-1px)}
+
+    .hero{padding:26px 0 8px}
+    .hero-grid{
+      display:grid;gap:14px;
+      grid-template-columns: 1.35fr .65fr;
+    }
+    @media (max-width: 900px){
+      .hero-grid{grid-template-columns:1fr}
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(16,24,35,.88), rgba(15,22,32,.88));
+      border:1px solid rgba(34,48,66,.85);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .hero-title{
+      font-size:34px;line-height:1.08;margin:0 0 10px;
+      letter-spacing:.2px;
+    }
+    .hero-sub{margin:0;color:var(--muted);line-height:1.6;max-width:62ch}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .chip{
+      font-size:12px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(34,48,66,.9);
+      background:rgba(11,15,20,.35);
+      color:var(--muted);
+    }
+    .chip b{color:var(--text)}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{
+      border:none;border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      cursor:pointer;
+      transition:.18s;
+      display:inline-flex;align-items:center;gap:8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    .btn-primary{background:var(--accent);color:#08121f}
+    .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    .btn-ghost{
+      background:rgba(11,15,20,.25);
+      color:var(--text);
+      border:1px solid rgba(34,48,66,.9);
+      box-shadow:none;
+    }
+    .btn-ghost:hover{border-color:rgba(45,124,255,.9);transform:translateY(-1px)}
+
+    .grid{
+      display:grid;gap:14px;
+      grid-template-columns: 1fr 1fr;
+      margin-top:14px;
+    }
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
+    .section-title{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin:0 0 10px;
+      font-size:18px;
+    }
+    .muted{color:var(--muted);font-size:13px;line-height:1.55}
+
+    .input, textarea{
+      width:100%;
+      background:rgba(11,15,20,.35);
+      border:1px solid rgba(34,48,66,.9);
+      border-radius:14px;
+      padding:12px 12px;
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:92px;resize:vertical}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row > *{flex:1 1 160px}
+
+    .list{
+      display:grid;gap:10px;margin:0;padding:0;list-style:none;
+    }
+    .item{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(34,48,66,.85);
+      background:rgba(11,15,20,.28);
+    }
+    .item b{display:block;margin-bottom:4px}
+    .tag{
+      font-size:12px;color:var(--muted);
+      border:1px solid rgba(34,48,66,.85);
+      padding:4px 8px;border-radius:999px;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .tag .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--accent2);
+      box-shadow:0 0 0 4px rgba(122,169,255,.12);
+    }
+    .kpi{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:10px
+    }
+    .kpi .box{
+      flex:1 1 140px;
+      background:rgba(11,15,20,.25);
+      border:1px solid rgba(34,48,66,.85);
+      border-radius:14px;
+      padding:12px;
+    }
+    .kpi .box .n{font-size:20px;font-weight:900;margin-top:4px}
+    .small{font-size:12px;color:var(--muted)}
+    footer{
+      padding:26px 0 34px;
+      color:var(--muted);
+      text-align:center;
+      font-size:13px;
+    }
+    .sep{height:1px;background:rgba(34,48,66,.7);margin:14px 0}
+    .ok{color:var(--good);font-weight:800}
+    .err{color:var(--bad);font-weight:800}
+  </style>
 </head>
+
 <body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">5A</div>
+        <div>
+          <h1>FiveAir1337Life-Time</h1>
+          <span>Работа • Деньги • Навыки • Бизнес</span>
+        </div>
+      </div>
 
-<header>
-    <h1>FiveAir1337Life-Time</h1>
-    <p>
-        Реальная жизнь без воды.<br>
-        Работа, деньги, навыки и бизнес — честно и по делу.
-    </p>
-
-    <div class="buttons">
-        <a href="#">Работа</a>
-        <a href="#">Деньги</a>
-        <a href="#">Навыки</a>
-        <a href="#">Бизнес</a>
+      <nav>
+        <a class="navbtn" href="#guides">📚 Гайды</a>
+        <a class="navbtn" href="#tools">🧰 Инструменты</a>
+        <a class="navbtn" href="#notes">📝 Заметки</a>
+        <a class="navbtn" href="#checklist">✅ День</a>
+      </nav>
     </div>
-</header>
+  </div>
 
-<footer>
-    © FiveAir1337Life-Time
-</footer>
-<button id="showBtn">Показать текст</button>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="card">
+          <h2 class="hero-title">Реальная жизнь — без воды.</h2>
+          <p class="hero-sub">
+            Здесь коротко и по делу: как найти работу, поднять доход, прокачать навыки и тестировать идеи бизнеса.
+            Всё, что можно применить сегодня.
+          </p>
 
-<p id="text" style="display:none;">
-Это сайт про реальную жизнь: работа, деньги, бизнес.
-</p>
+          <div class="chips">
+            <div class="chip"><b>1%</b> в день</div>
+            <div class="chip">фокус на <b>действиях</b></div>
+            <div class="chip">без <b>сказок</b></div>
+          </div>
 
-<script>
-document.getElementById("showBtn").onclick = function () {
-  let text = document.getElementById("text");
+          <div class="actions">
+            <button class="btn btn-primary" id="focusBtn">🌙 Фокус-режим</button>
+            <button class="btn btn-ghost" id="resetBtn">♻️ Сбросить данные</button>
+          </div>
 
-  if (text.style.display === "none") {
-    text.style.display = "block";
-  } else {
-    text.style.display = "none";
-  }
-};
-</script>
+          <div class="kpi" id="kpi">
+            <div class="box">
+              <div class="small">Заметок</div>
+              <div class="n" id="kpiNotes">0</div>
+            </div>
+            <div class="box">
+              <div class="small">Задач на сегодня</div>
+              <div class="n" id="kpiTasks">0</div>
+            </div>
+            <div class="box">
+              <div class="small">Выполнено</div>
+              <div class="n" id="kpiDone">0</div>
+            </div>
+          </div>
+        </div>
 
+        <div class="card">
+          <div class="section-title">
+            <span>⚡ Быстрый старт</span>
+            <span class="tag"><span class="dot"></span> Сегодня</span>
+          </div>
+          <p class="muted" style="margin-top:0">
+            Сделай 3 шага: выбери цель → поставь 3 задачи → зафиксируй итог.
+          </p>
+          <div class="sep"></div>
+
+          <label class="small">Цель на неделю</label>
+          <input class="input" id="weeklyGoal" placeholder="Напр: найти работу / поднять доход / запустить услугу" />
+
+          <div style="height:10px"></div>
+
+          <label class="small">Почему это важно?</label>
+          <input class="input" id="whyGoal" placeholder="Напр: хочу выйти на 50к / помочь семье / купить технику" />
+
+          <div style="height:12px"></div>
+          <button class="btn btn-primary" id="saveGoalBtn">💾 Сохранить</button>
+
+          <p class="muted" id="goalSaved" style="margin:10px 0 0"></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="guides" class="grid">
+      <div class="card">
+        <div class="section-title">
+          <span>📚 Гайды</span>
+          <span class="muted">поиск по темам</span>
+        </div>
+
+        <input class="input" id="searchGuides" placeholder="Поиск: резюме, собес, бюджет, фриланс..." />
+
+        <div style="height:10px"></div>
+
+        <ul class="list" id="guidesList">
+          <li class="item" data-tags="работа резюме собеседование">
+            <div>
+              <b>Как сделать резюме без воды</b>
+              <div class="muted">1 страница, конкретика, цифры, навыки, опыт.</div>
+              <div style="height:8px"></div>
+              <span class="tag"><span class="dot"></span> Работа</span>
+            </div>
+          </li>
+          <li class="item" data-tags="работа собеседование вопросы">
+            <div>
+              <b>10 вопросов на собесе и как отвечать</b>
+              <div class="muted">Готовые структуры ответов, без паники.</div>
+              <div style="height:8px"></div>
+              <span class="tag"><span class="dot"></span> Работа</span>
+            </div>
+          </li>
+          <li class="item" data-tags="деньги бюджет учет">
+            <div>
+              <b>Бюджет: схема 50/30/20 (простыми словами)</b>
+              <div class="muted">Как перестать жить в ноль и начать копить.</div>
+              <div style="height:8px"></div>
+              <span class="tag"><span class="dot"></span> Деньги</span>
+            </div>
+          </li>
+          <li class="item" data-tags="бизнес услуги старт">
+            <div>
+              <b>Микробизнес: услуга за 0 ₽</b>
+              <div class="muted">Что продать первым и где искать клиентов.</div>
+              <div style="height:8px"></div>
+              <span class="tag"><span class="dot"></span> Бизнес</span>
+            </div>
+          </li>
+          <li class="item" data-tags="навыки обучение бесплатно">
+            <div>
+              <b>Навыки, которые дают деньги</b>
+              <div class="muted">Коммуникация, продажи, дизайн, монтаж, код — как выбрать.</div>
+              <div style="height:8px"></div>
+              <span class="tag"><span class="dot"></span> Навыки</span>
+            </div>
+          </li>
+        </ul>
+
+        <p class="muted" id="noGuides" style="display:none;margin-top:10px">
+          Ничего не найдено 😅 Попробуй другое слово.
+        </p>
+      </div>
+
+      <div id="tools" class="card">
+        <div class="section-title">
+          <span>🧰 Инструменты</span>
+          <span class="muted">быстро посчитать</span>
+        </div>
+
+        <div class="row">
+          <div>
+            <label class="small">Часовая ставка (₽)</label>
+            <input class="input" id="rate" type="number" placeholder="Напр: 250" />
+          </div>
+          <div>
+            <label class="small">Часов</label>
+            <input class="input" id="hours" type="number" placeholder="Напр: 6" />
+          </div>
+        </div>
+
+        <div style="height:10px"></div>
+
+        <div class="row">
+          <div>
+            <label class="small">Дней</label>
+            <input class="input" id="days" type="number" placeholder="Напр: 20" />
+          </div>
+          <div>
+            <label class="small">Итог (₽)</label>
+            <input class="input" id="total" type="text" placeholder="0" disabled />
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+        <div class="row">
+          <button class="btn btn-primary" id="calcBtn">🧮 Посчитать</button>
+          <button class="btn btn-ghost" id="saveCalcBtn">💾 Сохранить расчёт</button>
+        </div>
+
+        <p class="muted" id="calcSaved" style="margin:10px 0 0"></p>
+
+        <div class="sep"></div>
+
+        <div class="section-title" style="margin:0 0 8px">
+          <span>📌 Последний расчёт</span>
+        </div>
+        <div class="muted" id="lastCalc">Пока пусто.</div>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:14px">
+      <div id="notes" class="card">
+        <div class="section-title">
+          <span>📝 Заметки</span>
+          <span class="muted">сохраняются</span>
+        </div>
+
+        <textarea id="noteText" placeholder="Записывай мысли: что сделать, что улучшить, что мешает..."></textarea>
+        <div style="height:10px"></div>
+        <button class="btn btn-primary" id="addNoteBtn">➕ Добавить</button>
+
+        <div class="sep"></div>
+        <ul class="list" id="notesList"></ul>
+        <p class="muted" id="noNotes">Пока нет заметок. Добавь первую ✍️</p>
+      </div>
+
+      <div id="checklist" class="card">
+        <div class="section-title">
+          <span>✅ План на день</span>
+          <span class="muted">3 дела — достаточно</span>
+        </div>
+
+        <div class="row">
+          <input class="input" id="taskText" placeholder="Добавь задачу (пример: откликнуться на 10 вакансий)" />
+          <button class="btn btn-primary" id="addTaskBtn">➕</button>
+        </div>
+
+        <div class="sep"></div>
+
+        <ul class="list" id="tasksList"></ul>
+        <p class="muted" id="noTasks">Пока задач нет. Добавь 1–3 задачи на сегодня ✅</p>
+      </div>
+    </section>
+
+    <footer>
+      © FiveAir1337Life-Time • Сделано на GitHub Pages • <span class="ok">бесплатно</span> ✅
+    </footer>
+  </div>
+
+  <script>
+    // ===== helpers =====
+    const $ = (id) => document.getElementById(id);
+    const store = {
+      get(key, fallback){
+        try{
+          const v = localStorage.getItem(key);
+          return v ? JSON.parse(v) : fallback;
+        }catch(e){ return fallback; }
+      },
+      set(key, val){
+        localStorage.setItem(key, JSON.stringify(val));
+      }
+    };
+
+    // ===== focus mode =====
+    const focusKey = "fa_focus";
+    function applyFocus(on){
+      if(on){
+        document.body.style.background = "#000";
+        store.set(focusKey, true);
+      } else {
+        document.body.style.background = "";
+        store.set(focusKey, false);
+      }
+    }
+    applyFocus(!!store.get(focusKey, false));
+    $("focusBtn").onclick = () => applyFocus(!store.get(focusKey, false));
+
+    // ===== goal =====
+    const goalKey = "fa_goal";
+    function loadGoal(){
+      const g = store.get(goalKey, {weekly:"", why:""});
+      $("weeklyGoal").value = g.weekly || "";
+      $("whyGoal").value = g.why || "";
+      $("goalSaved").textContent = g.weekly ? "✅ Сохранено" : "";
+    }
+    $("saveGoalBtn").onclick = () => {
+      store.set(goalKey, { weekly: $("weeklyGoal").value.trim(), why: $("whyGoal").value.trim() });
+      $("goalSaved").textContent = "✅ Сохранено";
+      setTimeout(()=> $("goalSaved").textContent = "", 1500);
+    };
+    loadGoal();
+
+    // ===== guides search =====
+    $("searchGuides").addEventListener("input", () => {
+      const q = $("searchGuides").value.trim().toLowerCase();
+      const items = Array.from($("guidesList").querySelectorAll(".item"));
+      let shown = 0;
+
+      items.forEach(li => {
+        const tags = (li.getAttribute("data-tags") || "").toLowerCase();
+        const text = li.innerText.toLowerCase();
+        const ok = !q || tags.includes(q) || text.includes(q);
+        li.style.display = ok ? "flex" : "none";
+        if(ok) shown++;
+      });
+
+      $("noGuides").style.display = shown ? "none" : "block";
+    });
+
+    // ===== calculator =====
+    const calcKey = "fa_calc";
+    function formatMoney(n){
+      const num = Number(n || 0);
+      return num.toLocaleString("ru-RU");
+    }
+    function calc(){
+      const rate = Number($("rate").value || 0);
+      const hours = Number($("hours").value || 0);
+      const days = Number($("days").value || 0);
+      const total = rate * hours * days;
+      $("total").value = formatMoney(total);
+      return { rate, hours, days, total };
+    }
+    $("calcBtn").onclick = calc;
+
+    function loadLastCalc(){
+      const c = store.get(calcKey, null);
+      if(!c){ $("lastCalc").textContent = "Пока пусто."; return; }
+      $("lastCalc").textContent = `${c.rate} ₽/час • ${c.hours} ч/день • ${c.days} дней → Итого: ${formatMoney(c.total)} ₽`;
+    }
+    $("saveCalcBtn").onclick = () => {
+      const c = calc();
+      store.set(calcKey, c);
+      loadLastCalc();
+      $("calcSaved").textContent = "✅ Расчёт сохранён";
+      setTimeout(()=> $("calcSaved").textContent = "", 1500);
+    };
+    loadLastCalc();
+
+    // ===== notes =====
+    const notesKey = "fa_notes";
+    function renderNotes(){
+      const notes = store.get(notesKey, []);
+      const ul = $("notesList");
+      ul.innerHTML = "";
+      $("noNotes").style.display = notes.length ? "none" : "block";
+
+      notes.forEach((n, idx) => {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.innerHTML = `
+          <div style="width:100%">
+            <b>${escapeHtml(n.title)}</b>
+            <div class="muted">${escapeHtml(n.text)}</div>
+            <div style="height:10px"></div>
+            <button class="btn btn-ghost" data-del-note="${idx}">🗑 Удалить</button>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+
+      ul.querySelectorAll("[data-del-note]").forEach(btn => {
+        btn.onclick = () => {
+          const i = Number(btn.getAttribute("data-del-note"));
+          const arr = store.get(notesKey, []);
+          arr.splice(i, 1);
+          store.set(notesKey, arr);
+          renderNotes();
+          renderKPI();
+        };
+      });
+    }
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+    $("addNoteBtn").onclick = () => {
+      const text = $("noteText").value.trim();
+      if(!text) return;
+
+      const title = text.length > 38 ? text.slice(0, 38) + "…" : text;
+      const notes = store.get(notesKey, []);
+      notes.unshift({ title, text, at: Date.now() });
+      store.set(notesKey, notes);
+      $("noteText").value = "";
+      renderNotes();
+      renderKPI();
+    };
+    renderNotes();
+
+    // ===== tasks =====
+    const tasksKey = "fa_tasks";
+    function renderTasks(){
+      const tasks = store.get(tasksKey, []);
+      const ul = $("tasksList");
+      ul.innerHTML = "";
+      $("noTasks").style.display = tasks.length ? "none" : "block";
+
+      tasks.forEach((t, idx) => {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.innerHTML = `
+          <input type="checkbox" ${t.done ? "checked" : ""} data-tk="${idx}" style="margin-top:2px;transform:scale(1.1)">
+          <div style="width:100%">
+            <b>${escapeHtml(t.text)}</b>
+            <div class="muted">${t.done ? "<span class='ok'>Сделано ✅</span>" : "В процессе…"}</div>
+            <div style="height:10px"></div>
+            <button class="btn btn-ghost" data-del-task="${idx}">🗑 Удалить</button>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+
+      ul.querySelectorAll("[data-tk]").forEach(ch => {
+        ch.onchange = () => {
+          const i = Number(ch.getAttribute("data-tk"));
+          const arr = store.get(tasksKey, []);
+          arr[i].done = ch.checked;
+          store.set(tasksKey, arr);
+          renderTasks();
+          renderKPI();
+        };
+      });
+
+      ul.querySelectorAll("[data-del-task]").forEach(btn => {
+        btn.onclick = () => {
+          const i = Number(btn.getAttribute("data-del-task"));
+          const arr = store.get(tasksKey, []);
+          arr.splice(i, 1);
+          store.set(tasksKey, arr);
+          renderTasks();
+          renderKPI();
+        };
+      });
+    }
+
+    $("addTaskBtn").onclick = () => {
+      const text = $("taskText").value.trim();
+      if(!text) return;
+      const tasks = store.get(tasksKey, []);
+      tasks.push({ text, done:false, at: Date.now() });
+      store.set(tasksKey, tasks);
+      $("taskText").value = "";
+      renderTasks();
+      renderKPI();
+    };
+    renderTasks();
+
+    // ===== KPI =====
+    function renderKPI(){
+      const notes = store.get(notesKey, []);
+      const tasks = store.get(tasksKey, []);
+      const done = tasks.filter(t=>t.done).length;
+
+      $("kpiNotes").textContent = notes.length;
+      $("kpiTasks").textContent = tasks.length;
+      $("kpiDone").textContent = done;
+    }
+    renderKPI();
+
+    // ===== reset =====
+    $("resetBtn").onclick = () => {
+      const ok = confirm("Точно сбросить заметки/задачи/цели? Это нельзя отменить.");
+      if(!ok) return;
+      localStorage.removeItem(notesKey);
+      localStorage.removeItem(tasksKey);
+      localStorage.removeItem(goalKey);
+      localStorage.removeItem(calcKey);
+      renderNotes();
+      renderTasks();
+      loadGoal();
+      loadLastCalc();
+      renderKPI();
+      alert("Готово ✅");
+    };
+  </script>
 </body>
 </html>
